@@ -8,18 +8,19 @@ import java.util.logging.Logger;
 
 public class DriverDB {
     private static final Logger logger = Logger.getLogger(DriverDB.class.getName());
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/megacitycab";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/megacitycab?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASS = "Admin";
-    static final String INSERT_QUERY = "INSERT INTO drivers (Name, NIC, LicenseNumber, LicenseExpiryDate, PhoneNumber, Address, Email, DateOfBirth, Gender, Availability, YearsOfExperience, Rating, LastTripDate, EmergencyContact, Salary, AssignedCarID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    static final String INSERT_QUERY = "INSERT INTO drivers (Name, NIC, LicenseNumber, LicenseExpiryDate, PhoneNumber, Address, Email, DateOfBirth, Gender, Availability, YearsOfExperience, Rating, LastTripDate, EmergencyContact, Salary, AssignedCarID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    // Use a connection pool in production instead of creating a new connection every time
     private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
     public List<Driver> getAllDrivers() {
         List<Driver> drivers = new ArrayList<>();
-        String query ="SELECT * FROM megacitycab.drivers";
+        String query = "SELECT * FROM megacitycab.drivers";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -30,7 +31,7 @@ public class DriverDB {
             }
             logger.info("Fetched " + drivers.size() + " drivers from DB");
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error fetching drivers", e);
+            logger.log(Level.SEVERE, "Error fetching drivers: " + e.getMessage(), e);
         }
         return drivers;
     }
@@ -47,63 +48,34 @@ public class DriverDB {
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error fetching driver by ID", e);
+            logger.log(Level.SEVERE, "Error fetching driver by ID: " + e.getMessage(), e);
         }
         return null;
     }
 
-  public boolean addDriver(Driver driver) {
-    // Validate that the driver's name is not null or empty
-    if (driver.getName() == null || driver.getName().trim().isEmpty()) {
-        System.out.println("Error: Driver name is missing.");
-        return false; // Prevent insertion if Name is missing
-    }
-    
-    System.out.println("Inserting driver with name: " + driver.getName()); // Log name for debugging
-    
-    try (Connection conn = getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(INSERT_QUERY)) {
-
-        // Set values for each parameter in the SQL query
-        pstmt.setString(1, driver.getName());
-        pstmt.setString(2, driver.getNic());
-        pstmt.setString(3, driver.getLicenseNumber());
-        
-        // Handle LicenseExpiryDate (Check for null)
-        if (driver.getLicenseExpiryDate() != null) {
-            pstmt.setDate(4, java.sql.Date.valueOf(driver.getLicenseExpiryDate()));
-        } else {
-            pstmt.setNull(4, java.sql.Types.DATE);  // Set NULL if the date is null
+    public boolean addDriver(Driver driver) {
+        if (driver.getName() == null || driver.getName().trim().isEmpty()) {
+            logger.warning("Driver name is missing. Cannot add driver.");
+            return false;
         }
 
-        pstmt.setString(5, driver.getPhoneNumber());
-        pstmt.setString(6, driver.getAddress());
-        pstmt.setString(7, driver.getEmail());
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(INSERT_QUERY)) {
 
-        // Handle DateOfBirth (Check for null)
-        if (driver.getDateOfBirth() != null) {
-            pstmt.setDate(8, java.sql.Date.valueOf(driver.getDateOfBirth()));
-        } else {
-            pstmt.setNull(8, java.sql.Types.DATE);  // Set NULL if the date is null
+            setDriverParams(pstmt, driver, false);
+            int rowsInserted = pstmt.executeUpdate();
+            if (rowsInserted > 0) {
+                logger.info("Driver added successfully: " + driver.getName());
+                return true;
+            } else {
+                logger.warning("Failed to add driver: " + driver.getName());
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error adding driver: " + e.getMessage(), e);
+            return false;
         }
-
-        pstmt.setString(9, driver.getGender() != null ? driver.getGender().toString() : null);
-        pstmt.setBoolean(10, driver.isAvailability());
-        pstmt.setInt(11, driver.getYearsOfExperience());
-        pstmt.setDouble(12, driver.getRating());
-        pstmt.setDate(13, driver.getLastTripDate() != null ? java.sql.Date.valueOf(driver.getLastTripDate()) : null);
-        pstmt.setString(14, driver.getEmergencyContact());
-        pstmt.setDouble(15, driver.getSalary());
-        pstmt.setInt(16, driver.getAssignedCarID());
-
-        // Execute the update query and return whether the insertion was successful
-        return pstmt.executeUpdate() > 0;
-
-    } catch (SQLException e) {
-        logger.log(Level.SEVERE, "Error adding new driver", e);
-        return false;
     }
-}
 
     public boolean updateDriver(Driver driver) {
         String query = "UPDATE drivers SET Name = ?, NIC = ?, LicenseNumber = ?, LicenseExpiryDate = ?, PhoneNumber = ?, Address = ?, Email = ?, DateOfBirth = ?, Gender = ?, Availability = ?, YearsOfExperience = ?, Rating = ?, LastTripDate = ?, EmergencyContact = ?, Salary = ?, AssignedCarID = ? WHERE DriverID = ?";
@@ -112,9 +84,16 @@ public class DriverDB {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             setDriverParams(pstmt, driver, true);
-            return pstmt.executeUpdate() > 0;
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                logger.info("Driver updated successfully: " + driver.getDriverID());
+                return true;
+            } else {
+                logger.warning("Failed to update driver: " + driver.getDriverID());
+                return false;
+            }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error updating driver", e);
+            logger.log(Level.SEVERE, "Error updating driver: " + e.getMessage(), e);
             return false;
         }
     }
@@ -125,9 +104,16 @@ public class DriverDB {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, driverID);
-            return pstmt.executeUpdate() > 0;
+            int rowsDeleted = pstmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                logger.info("Driver deleted successfully: " + driverID);
+                return true;
+            } else {
+                logger.warning("Failed to delete driver: " + driverID);
+                return false;
+            }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error deleting driver", e);
+            logger.log(Level.SEVERE, "Error deleting driver: " + e.getMessage(), e);
             return false;
         }
     }
@@ -143,7 +129,7 @@ public class DriverDB {
                 rs.getString("Address"),
                 rs.getString("Email"),
                 rs.getDate("DateOfBirth") != null ? rs.getDate("DateOfBirth").toLocalDate() : null,
-                Driver.Gender.valueOf(rs.getString("Gender")),
+                rs.getString("Gender") != null ? Driver.Gender.valueOf(rs.getString("Gender")) : null,
                 rs.getInt("AssignedCarID"),
                 rs.getBoolean("Availability"),
                 rs.getInt("YearsOfExperience"),

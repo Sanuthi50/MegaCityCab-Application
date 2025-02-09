@@ -8,7 +8,7 @@ import java.time.LocalDate;
  */
 public class Driver {
 
-    private int driverID;
+    private final int driverID; // Mark as final
     private String name;
     private String nic;
     private String licenseNumber;
@@ -36,7 +36,8 @@ public class Driver {
     /**
      * Default constructor initializing default values.
      */
-    public Driver(String updated_Name, String v, String aB1234567, LocalDate of, String string, String _New_Street_City, String updatedemailexamplecom, LocalDate of1, Gender Male, boolean par, int driverID1, double par1, LocalDate of2, String string1, double par2, int par3) {
+    public Driver() {
+        this.driverID = 0; // Default ID
         this.availability = true; // Default availability
         this.yearsOfExperience = 0; // Default years of experience
         this.rating = 0.0; // Default rating
@@ -51,22 +52,22 @@ public class Driver {
                   int assignedCarID, boolean availability, int yearsOfExperience, double rating, 
                   LocalDate lastTripDate, String emergencyContact, double salary) {
         this.driverID = driverID;
-        this.name = name;
-        this.nic = nic;
-        this.licenseNumber = licenseNumber;
+        this.setName(name);
+        this.setNic(nic);
+        this.setLicenseNumber(licenseNumber);
         this.licenseExpiryDate = licenseExpiryDate;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
+        this.setGender(gender);
         this.assignedCarID = assignedCarID;
         this.availability = availability;
-        this.yearsOfExperience = Math.max(0, yearsOfExperience);
-        this.rating = Math.min(5.0, Math.max(0.0, rating)); // Ensuring rating is between 0-5
+        this.setYearsOfExperience(yearsOfExperience);
+        this.setRating(rating);
         this.lastTripDate = lastTripDate;
         this.emergencyContact = emergencyContact;
-        this.salary = Math.max(0.0, salary);
+        this.setSalary(salary);
     }
 
     // Getters and Setters
@@ -74,15 +75,14 @@ public class Driver {
         return driverID;
     }
 
-    public void setDriverID(int driverID) {
-        this.driverID = driverID;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
         this.name = name;
     }
 
@@ -91,6 +91,9 @@ public class Driver {
     }
 
     public void setNic(String nic) {
+        if (nic == null || nic.trim().isEmpty()) {
+            throw new IllegalArgumentException("NIC cannot be null or empty");
+        }
         this.nic = nic;
     }
 
@@ -99,6 +102,9 @@ public class Driver {
     }
 
     public void setLicenseNumber(String licenseNumber) {
+        if (licenseNumber == null || licenseNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("License number cannot be null or empty");
+        }
         this.licenseNumber = licenseNumber;
     }
 
@@ -147,6 +153,9 @@ public class Driver {
     }
 
     public void setGender(Gender gender) {
+        if (gender == null) {
+            throw new IllegalArgumentException("Gender cannot be null");
+        }
         this.gender = gender;
     }
 
@@ -212,10 +221,12 @@ public class Driver {
     @Override
     public String toString() {
         return "Driver [driverID=" + driverID + ", name=" + name + ", nic=" + nic + ", licenseNumber=" + licenseNumber
-                + ", licenseExpiryDate=" + licenseExpiryDate + ", phoneNumber=" + phoneNumber + ", address=" + address
-                + ", email=" + email + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", assignedCarID="
-                + assignedCarID + ", availability=" + availability + ", yearsOfExperience=" + yearsOfExperience
-                + ", rating=" + rating + ", lastTripDate=" + lastTripDate + ", emergencyContact=" + emergencyContact
-                + ", salary=" + salary + "]";
+                + ", licenseExpiryDate=" + (licenseExpiryDate != null ? licenseExpiryDate : "null") 
+                + ", phoneNumber=" + phoneNumber + ", address=" + address
+                + ", email=" + email + ", dateOfBirth=" + (dateOfBirth != null ? dateOfBirth : "null")
+                + ", gender=" + (gender != null ? gender : "null") + ", assignedCarID=" + assignedCarID 
+                + ", availability=" + availability + ", yearsOfExperience=" + yearsOfExperience
+                + ", rating=" + rating + ", lastTripDate=" + (lastTripDate != null ? lastTripDate : "null")
+                + ", emergencyContact=" + emergencyContact + ", salary=" + salary + "]";
     }
 }
