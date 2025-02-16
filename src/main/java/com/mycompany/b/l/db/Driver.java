@@ -8,7 +8,8 @@ import java.time.LocalDate;
  */
 public class Driver {
 
-    private final int driverID; // Mark as final
+  
+    private int driverID; // Mark as final
     private String name;
     private String nic;
     private String licenseNumber;
@@ -25,6 +26,10 @@ public class Driver {
     private LocalDate lastTripDate;
     private String emergencyContact;
     private double salary;
+
+    public void setdriverID(int driverID) {
+       this.driverID = driverID;
+    }
 
     /**
      * Enum for gender specification.
@@ -47,26 +52,26 @@ public class Driver {
     /**
      * Parameterized constructor to initialize all attributes.
      */
-    public Driver(int driverID, String name, String nic, String licenseNumber, LocalDate licenseExpiryDate, 
-                  String phoneNumber, String address, String email, LocalDate dateOfBirth, Gender gender, 
-                  int assignedCarID, boolean availability, int yearsOfExperience, double rating, 
+    public Driver(int driverID, String name, String nic, String licenseNumber, LocalDate licenseExpiryDate,
+                  String phoneNumber, String address, String email, LocalDate dateOfBirth, Gender gender,
+                  int assignedCarID, boolean availability, int yearsOfExperience, double rating,
                   LocalDate lastTripDate, String emergencyContact, double salary) {
         this.driverID = driverID;
         this.setName(name);
         this.setNic(nic);
         this.setLicenseNumber(licenseNumber);
         this.licenseExpiryDate = licenseExpiryDate;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
+        this.setPhoneNumber(phoneNumber);
+        this.setAddress(address);
+        this.setEmail(email);
+        this.setDateOfBirth(dateOfBirth);
         this.setGender(gender);
         this.assignedCarID = assignedCarID;
         this.availability = availability;
         this.setYearsOfExperience(yearsOfExperience);
         this.setRating(rating);
         this.lastTripDate = lastTripDate;
-        this.emergencyContact = emergencyContact;
+        this.setEmergencyContact(emergencyContact);
         this.setSalary(salary);
     }
 
@@ -74,6 +79,10 @@ public class Driver {
     public int getDriverID() {
         return driverID;
     }
+      public void setDriverID(int driverID) {
+        this.driverID = driverID;
+    }
+
 
     public String getName() {
         return name;
@@ -121,6 +130,9 @@ public class Driver {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be null or empty");
+        }
         this.phoneNumber = phoneNumber;
     }
 
@@ -129,6 +141,9 @@ public class Driver {
     }
 
     public void setAddress(String address) {
+        if (address == null || address.trim().isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be null or empty");
+        }
         this.address = address;
     }
 
@@ -137,6 +152,9 @@ public class Driver {
     }
 
     public void setEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
         this.email = email;
     }
 
@@ -145,6 +163,9 @@ public class Driver {
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of birth cannot be null");
+        }
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -180,7 +201,10 @@ public class Driver {
     }
 
     public void setYearsOfExperience(int yearsOfExperience) {
-        this.yearsOfExperience = Math.max(0, yearsOfExperience);
+        if (yearsOfExperience < 0) {
+            throw new IllegalArgumentException("Years of experience cannot be negative");
+        }
+        this.yearsOfExperience = yearsOfExperience;
     }
 
     public double getRating() {
@@ -188,7 +212,10 @@ public class Driver {
     }
 
     public void setRating(double rating) {
-        this.rating = Math.min(5.0, Math.max(0.0, rating)); // Ensuring rating stays between 0-5
+        if (rating < 0.0 || rating > 5.0) {
+            throw new IllegalArgumentException("Rating must be between 0.0 and 5.0");
+        }
+        this.rating = rating;
     }
 
     public LocalDate getLastTripDate() {
@@ -204,6 +231,9 @@ public class Driver {
     }
 
     public void setEmergencyContact(String emergencyContact) {
+        if (emergencyContact == null || emergencyContact.trim().isEmpty()) {
+            throw new IllegalArgumentException("Emergency contact cannot be null or empty");
+        }
         this.emergencyContact = emergencyContact;
     }
 
@@ -212,7 +242,10 @@ public class Driver {
     }
 
     public void setSalary(double salary) {
-        this.salary = Math.max(0.0, salary);
+        if (salary < 0.0) {
+            throw new IllegalArgumentException("Salary cannot be negative");
+        }
+        this.salary = salary;
     }
 
     /**
@@ -221,10 +254,10 @@ public class Driver {
     @Override
     public String toString() {
         return "Driver [driverID=" + driverID + ", name=" + name + ", nic=" + nic + ", licenseNumber=" + licenseNumber
-                + ", licenseExpiryDate=" + (licenseExpiryDate != null ? licenseExpiryDate : "null") 
+                + ", licenseExpiryDate=" + (licenseExpiryDate != null ? licenseExpiryDate : "null")
                 + ", phoneNumber=" + phoneNumber + ", address=" + address
                 + ", email=" + email + ", dateOfBirth=" + (dateOfBirth != null ? dateOfBirth : "null")
-                + ", gender=" + (gender != null ? gender : "null") + ", assignedCarID=" + assignedCarID 
+                + ", gender=" + (gender != null ? gender : "null") + ", assignedCarID=" + assignedCarID
                 + ", availability=" + availability + ", yearsOfExperience=" + yearsOfExperience
                 + ", rating=" + rating + ", lastTripDate=" + (lastTripDate != null ? lastTripDate : "null")
                 + ", emergencyContact=" + emergencyContact + ", salary=" + salary + "]";

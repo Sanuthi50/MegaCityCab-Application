@@ -7,7 +7,12 @@ db\Cars$Status.class
 db\DBUtills$CustomerDAO.class
 db\DBUtills.class
 com\mycompany\b\l\resources\DriverServices.class
+com\mycompany\b\l\db\DatabaseConnection$SingletonHelper.class
 com\mycompany\b\l\db\Driver$Gender.class
+com\mycompany\b\l\db\DatabaseConnection$1.class
 com\mycompany\b\l\service\JakartaRestConfiguration.class
+com\mycompany\b\l\db\GsonUtil.class
 com\mycompany\b\l\resources\JakartaEE8Resource.class
 db\Cars.class
+com\mycompany\b\l\db\DatabaseConnection.class
+com\mycompany\b\l\db\LocalDateAdapter.class

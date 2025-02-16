@@ -13,6 +13,24 @@ public class DriverDB {
     private static final String PASS = "Admin";
     static final String INSERT_QUERY = "INSERT INTO drivers (Name, NIC, LicenseNumber, LicenseExpiryDate, PhoneNumber, Address, Email, DateOfBirth, Gender, Availability, YearsOfExperience, Rating, LastTripDate, EmergencyContact, Salary, AssignedCarID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    // Singleton instance of DriverDB
+    private static DriverDB instance;
+
+    // Private constructor to prevent instantiation
+    public DriverDB() {}
+
+    // Public method to get the single instance of DriverDB
+    public static DriverDB getInstance() {
+        if (instance == null) {
+            synchronized (DriverDB.class) {
+                if (instance == null) {
+                    instance = new DriverDB();
+                }
+            }
+        }
+        return instance;
+    }
+
     // Use a connection pool in production instead of creating a new connection every time
     private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, USER, PASS);
@@ -78,12 +96,18 @@ public class DriverDB {
     }
 
     public boolean updateDriver(Driver driver) {
-        String query = "UPDATE drivers SET Name = ?, NIC = ?, LicenseNumber = ?, LicenseExpiryDate = ?, PhoneNumber = ?, Address = ?, Email = ?, DateOfBirth = ?, Gender = ?, Availability = ?, YearsOfExperience = ?, Rating = ?, LastTripDate = ?, EmergencyContact = ?, Salary = ?, AssignedCarID = ? WHERE DriverID = ?";
+        String query = "UPDATE drivers SET Name = ?, NIC = ?, LicenseNumber = ?, "
+                + "LicenseExpiryDate = ?, PhoneNumber = ?, Address = ?, Email = ?, DateOfBirth = ?, Gender = ?, "
+                + "Availability = ?, YearsOfExperience = ?, Rating = ?, LastTripDate = ?, EmergencyContact = ?,"
+                + " Salary = ?, AssignedCarID = ? WHERE DriverID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
+            // Set parameters for the PreparedStatement
             setDriverParams(pstmt, driver, true);
+
+            // Execute the update
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
                 logger.info("Driver updated successfully: " + driver.getDriverID());

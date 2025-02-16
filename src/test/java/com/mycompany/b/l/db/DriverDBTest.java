@@ -91,7 +91,6 @@ public class DriverDBTest {
         assertTrue("Driver should be added successfully", result);
     }
 */
-
     @Test
     public void testUpdateDriver() {
         System.out.println("updateDriver");
@@ -99,7 +98,7 @@ public class DriverDBTest {
         DriverDB driverDB = new DriverDB();  
         int driverID = 4;
         
-        Driver driver = new Driver(
+       Driver driver = new Driver(
             driverID,
             "Updated Name",
             "665555V",
@@ -118,6 +117,7 @@ public class DriverDBTest {
             "911",
             50000.00
         );
+
 
         boolean result = driverDB.updateDriver(driver);
         assertTrue("Driver update failed", result);
