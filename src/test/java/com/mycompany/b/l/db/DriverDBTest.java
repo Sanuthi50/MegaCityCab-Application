@@ -109,7 +109,7 @@ public class DriverDBTest {
             "updatedemail@example.com",
             LocalDate.of(1985, 5, 12),
             Driver.Gender.Male,
-            8,
+            111,
             true,
             10,
             4.5,
@@ -140,6 +140,6 @@ public class DriverDBTest {
         assertEquals(LocalDate.of(2025, 1, 25), updatedDriver.getLastTripDate());
         assertEquals("911", updatedDriver.getEmergencyContact());
         assertEquals(50000.00, updatedDriver.getSalary(), 0.01);
-        assertEquals(8, updatedDriver.getAssignedCarID());
+        assertEquals(111, updatedDriver.getAssignedCarID());
     }
 }

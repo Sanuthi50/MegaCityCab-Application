@@ -1,1 +1,3 @@
 com\mycompany\b\l\db\DriverDBTest.class
+com\mycompany\b\l\db\CarDBTest.class
+com\mycompany\b\l\db\CustomerDAOTest.class

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package db;
+package com.mycompany.b.l.db;
 
 /**
  *
@@ -10,7 +10,7 @@ package db;
  */
 import java.time.LocalDateTime;
 public class Customer {
-    private String customerID;
+    private int customerID;
     private String username;
     private String passwordHash;
     private String name;
@@ -19,7 +19,7 @@ public class Customer {
     private String phoneNumber;
     private String email;
     private LocalDateTime registrationDate;
-    private int totalBookings;
+    private Integer totalBookings;
 
     // Default constructor
     public Customer() {
@@ -28,8 +28,8 @@ public class Customer {
     }
 
     // Parameterized constructor
-    public Customer(String customerID, String username, String passwordHash, String name, String address, 
-                    String nic, String phoneNumber, String email) {
+    public Customer(int customerID, String username, String passwordHash, String name, String address, 
+                    String nic, String phoneNumber, String email,LocalDateTime registrationDate, Integer totalBookings) {
         this.customerID = customerID;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -42,16 +42,13 @@ public class Customer {
         this.totalBookings = 0; // Default value for total bookings
     }
 
-    Customer(String string, String string0, String string1, String string2, String string3, String string4, String string5, String string6, LocalDateTime toLocalDateTime, int aInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+   
     // Getters and Setters
-    public String getCustomerID() {
+    public int getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(String customerID) {
+    public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
 
