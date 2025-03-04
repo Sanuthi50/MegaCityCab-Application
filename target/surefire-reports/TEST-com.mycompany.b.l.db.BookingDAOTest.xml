@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.BookingDAOTest" time="0.81" tests="17" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="sun.desktop" value="windows"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\User\Downloads\B.L\target\test-classes;C:\Users\User\Downloads\B.L\target\classes;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\User\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\User\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar;C:\Users\User\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\User\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\User\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\User\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\User\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;C:\Users\User\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar;"/>
+    <property name="java.vm.vendor" value="Azul Systems, Inc."/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="http://www.azul.com/"/>
+    <property name="user.timezone" value="Asia/Colombo"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\bin"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire864882870582633262\surefirebooter-20250305013027800_3.jar C:\Users\User\AppData\Local\Temp\surefire864882870582633262 2025-03-05T01-30-27_513-jvmRun1 surefire-20250305013027800_1tmp surefire_0-20250305013027800_2tmp"/>
+    <property name="surefire.test.class.path" value="C:\Users\User\Downloads\B.L\target\test-classes;C:\Users\User\Downloads\B.L\target\classes;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\User\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\User\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar;C:\Users\User\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\User\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\User\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\User\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\User\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;C:\Users\User\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\User"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.home" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre"/>
+    <property name="basedir" value="C:\Users\User\Downloads\B.L"/>
+    <property name="file.separator" value="\"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="jdk.vendor.version" value="Zulu 8.84.0.15-CA-win64"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire864882870582633262\surefirebooter-20250305013027800_3.jar"/>
+    <property name="sun.boot.class.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\resources.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\rt.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\sunrsasign.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jsse.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jce.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\charsets.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jfr.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\cat.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\classes"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="1.8.0_442-b06"/>
+    <property name="user.name" value="User"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.endorsed.dirs" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\endorsed"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="maven.ext.class.path" value="C:\Program Files\NetBeans-23\netbeans\java\maven-nblib\netbeans-eventspy.jar"/>
+    <property name="localRepository" value="C:\Users\User\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="http://www.azul.com/support/"/>
+    <property name="java.io.tmpdir" value="C:\Users\User\AppData\Local\Temp\"/>
+    <property name="java.version" value="1.8.0_442"/>
+    <property name="user.dir" value="C:\Users\User\Downloads\B.L"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.library.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python312\Scripts\;C:\Python312\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\ngrok;C:\Program Files\Git\cmd;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\.dotnet\tools;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\User\AppData\Roaming\npm;C:\Users\User\AppData\Local\GitHubDesktop\bin;."/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vendor" value="Azul Systems, Inc."/>
+    <property name="java.vm.version" value="25.442-b06"/>
+    <property name="java.specification.maintenance.version" value="6"/>
+    <property name="java.ext.dirs" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="52.0"/>
+  </properties>
+  <testcase name="testGetBookingsByStatus" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.365">
+    <system-out><![CDATA[getBookingsByStatus
+Found 255 bookings with status: Pending
+]]></system-out>
+    <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
+  </testcase>
+  <testcase name="testSearchBookingsByCustomerID" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.025">
+    <system-out><![CDATA[searchBookingsByCustomerID
+Found 187 bookings for customer ID: 1
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingById" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.007">
+    <system-out><![CDATA[getBookingById
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByDriverId" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.01">
+    <system-out><![CDATA[getBookingsByDriverId
+No bookings found for driverId=1
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByDriverIdAndStatus" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.017">
+    <system-out><![CDATA[getBookingsByDriverIdAndStatus
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCustomerIdAndDriverId" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.009">
+    <system-out><![CDATA[getBookingsByCustomerIdAndDriverId
+No bookings found for customerId=10 and driverId=86
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCustomerIdOrderByBookingDate" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.015">
+    <system-out><![CDATA[getBookingsByCustomerIdOrderByBookingDate
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsWithNullDriverId" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.041">
+    <system-out><![CDATA[getBookingsWithNullDriverId
+]]></system-out>
+  </testcase>
+  <testcase name="testGetAllBookings" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.028">
+    <system-err><![CDATA[Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: Starting testGetAllBookings method
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: Checking if BookingDAO instance is initialized
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: BookingDAO instance is initialized successfully
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: Retrieving list of bookings from the database
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: Number of cars retrieved: 726
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: First car in the list: Booking{bookingId=2, customerId=10, pickupLocation='123 Main St', dropLocation='456 Elm St', price=50.0, discount=5.0, tax=4.5, bookingDate=2023-10-01 10:00:00.0, status=Pending, carId=86, driverId=12}
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: Performing assertions on the retrieved car list
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAOTest testGetAllBookings
+INFO: testGetAllCars method completed successfully
+]]></system-err>
+  </testcase>
+  <testcase name="testUpdateBooking" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.055">
+    <system-out><![CDATA[updateBooking
+]]></system-out>
+    <system-err><![CDATA[java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`megacitycab`.`bookings`, CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`CarID`) REFERENCES `cars` (`CarID`) ON DELETE SET NULL ON UPDATE SET NULL)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:117)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.mycompany.b.l.db.BookingDAO.addBooking(BookingDAO.java:47)
+	at com.mycompany.b.l.db.BookingDAOTest.testUpdateBooking(BookingDAOTest.java:148)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Mar 05, 2025 1:30:29 AM com.mycompany.b.l.db.BookingDAO updateBooking
+INFO: Booking updated successfully.
+]]></system-err>
+  </testcase>
+  <testcase name="testGetBookingsByDateRange" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.032">
+    <system-out><![CDATA[getBookingsByDateRange
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCarId" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.054">
+    <system-out><![CDATA[getBookingsByCarId
+]]></system-out>
+  </testcase>
+  <testcase name="testAddBooking" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.015">
+    <system-out><![CDATA[addBooking
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCarIdAndStatus" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.016">
+    <system-out><![CDATA[getBookingsByCarIdAndStatus
+Found 209 bookings for carId: 86 and status: Pending
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCustomerIdAndCarIdAndDriverId" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.011">
+    <system-out><![CDATA[getBookingsByCustomerIdAndCarIdAndDriverId
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteBooking" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.022">
+    <system-out><![CDATA[deleteBooking
+]]></system-out>
+  </testcase>
+  <testcase name="testGetBookingsByCustomerIdAndStatus" classname="com.mycompany.b.l.db.BookingDAOTest" time="0.011">
+    <system-out><![CDATA[getBookingsByCustomerIdAndStatus
+]]></system-out>
+  </testcase>
+</testsuite>
