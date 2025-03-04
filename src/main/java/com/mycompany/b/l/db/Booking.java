@@ -8,7 +8,6 @@ package com.mycompany.b.l.db;
  *
  * @author User
  */
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Booking {
@@ -16,18 +15,37 @@ public class Booking {
     private int customerId;
     private String pickupLocation;
     private String dropLocation;
-    private BigDecimal price;
-    private BigDecimal discount;
-    private BigDecimal tax;
+    private double price; // Changed to double for simplicity
+    private double discount; // Changed to double for simplicity
+    private double tax; // Changed to double for simplicity
     private Timestamp bookingDate;
-    private String status;
+    private Status status; // Changed to enum type
     private Integer carId;
     private Integer driverId;
 
+   
+
+    // Enum for Status
+    public enum Status {
+        Pending, Completed, Confirmed, Canceled;
+
+        // Case-insensitive lookup method
+        public static Status fromString(String value) {
+            if (value != null) {
+                for (Status status : Status.values()) {
+                    if (status.name().equalsIgnoreCase(value)) {
+                        return status;
+                    }
+                }
+                throw new IllegalArgumentException("Unknown Status: " + value);
+            }
+            return null; // or handle default case
+        }
+    }
     // Constructor
     public Booking(int bookingId, int customerId, String pickupLocation, String dropLocation,
-                   BigDecimal price, BigDecimal discount, BigDecimal tax, Timestamp bookingDate,
-                   String status, Integer carId, Integer driverId) {
+                   double price, double discount, double tax, Timestamp bookingDate,
+                   Status status, Integer carId, Integer driverId) {
         this.bookingId = bookingId;
         this.customerId = customerId;
         this.pickupLocation = pickupLocation;
@@ -74,27 +92,27 @@ public class Booking {
         this.dropLocation = dropLocation;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public BigDecimal getDiscount() {
+    public double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
-    public BigDecimal getTax() {
+    public double getTax() {
         return tax;
     }
 
-    public void setTax(BigDecimal tax) {
+    public void setTax(double tax) {
         this.tax = tax;
     }
 
@@ -106,11 +124,11 @@ public class Booking {
         this.bookingDate = bookingDate;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -141,7 +159,7 @@ public class Booking {
                 ", discount=" + discount +
                 ", tax=" + tax +
                 ", bookingDate=" + bookingDate +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", carId=" + carId +
                 ", driverId=" + driverId +
                 '}';
