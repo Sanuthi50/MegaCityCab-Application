@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.CustomerDAOTest" time="0.058" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.CustomerDAOTest" time="0.456" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -18,7 +18,8 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire864882870582633262\surefirebooter-20250305013027800_3.jar C:\Users\User\AppData\Local\Temp\surefire864882870582633262 2025-03-05T01-30-27_513-jvmRun1 surefire-20250305013027800_1tmp surefire_0-20250305013027800_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire982662651114415177\surefirebooter-20250309151802900_3.jar C:\Users\User\AppData\Local\Temp\surefire982662651114415177 2025-03-09T15-18-02_570-jvmRun1 surefire-20250309151802900_1tmp surefire_0-20250309151802900_2tmp"/>
+    <property name="test" value="com.mycompany.b.l.db.CustomerDAOTest"/>
     <property name="surefire.test.class.path" value="C:\Users\User\Downloads\B.L\target\test-classes;C:\Users\User\Downloads\B.L\target\classes;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\User\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\User\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar;C:\Users\User\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\User\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\User\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\User\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\User\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;C:\Users\User\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\User"/>
@@ -32,7 +33,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire864882870582633262\surefirebooter-20250305013027800_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire982662651114415177\surefirebooter-20250309151802900_3.jar"/>
     <property name="sun.boot.class.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\resources.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\rt.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\sunrsasign.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jsse.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jce.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\charsets.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jfr.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\cat.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -63,46 +64,58 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testGetCustomerById" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.004">
+  <testcase name="testGetCustomerById" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.314">
     <system-out><![CDATA[getCustomerById
 ]]></system-out>
+    <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
   </testcase>
-  <testcase name="testIsUsernameExists" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.026">
+  <testcase name="testIsUsernameExists" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.004">
     <system-out><![CDATA[isUsernameExists
 ]]></system-out>
   </testcase>
-  <testcase name="testSearchCustomers" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.004">
+  <testcase name="testAuthenticateCustomer_Successful" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.004">
+    <system-out><![CDATA[testAuthenticateCustomer_Successful
+]]></system-out>
+  </testcase>
+  <testcase name="testSearchCustomers" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.008">
     <system-out><![CDATA[searchCustomers
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllCustomers" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.004">
+  <testcase name="testGetAllCustomers" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.01">
     <system-out><![CDATA[getAllCustomers
-com.mycompany.b.l.db.Customer@318ba8c8
-com.mycompany.b.l.db.Customer@6dbb137d
-com.mycompany.b.l.db.Customer@3c9d0b9d
-com.mycompany.b.l.db.Customer@43301423
-com.mycompany.b.l.db.Customer@2f112965
-com.mycompany.b.l.db.Customer@1a04f701
-com.mycompany.b.l.db.Customer@4e91d63f
-com.mycompany.b.l.db.Customer@d4342c2
-com.mycompany.b.l.db.Customer@2bbf180e
-com.mycompany.b.l.db.Customer@163e4e87
-com.mycompany.b.l.db.Customer@56de5251
-com.mycompany.b.l.db.Customer@419c5f1a
-com.mycompany.b.l.db.Customer@12b0404f
-com.mycompany.b.l.db.Customer@769e7ee8
-com.mycompany.b.l.db.Customer@5276e6b0
-com.mycompany.b.l.db.Customer@71b1176b
-com.mycompany.b.l.db.Customer@6193932a
-com.mycompany.b.l.db.Customer@647fd8ce
-com.mycompany.b.l.db.Customer@159f197
+com.mycompany.b.l.db.Customer@12d3a4e9
+com.mycompany.b.l.db.Customer@240237d2
+com.mycompany.b.l.db.Customer@25a65b77
+com.mycompany.b.l.db.Customer@2ed0fbae
+com.mycompany.b.l.db.Customer@212bf671
+com.mycompany.b.l.db.Customer@14a2f921
+com.mycompany.b.l.db.Customer@3c87521
+com.mycompany.b.l.db.Customer@2aece37d
+com.mycompany.b.l.db.Customer@548a102f
+com.mycompany.b.l.db.Customer@5762806e
+com.mycompany.b.l.db.Customer@17c386de
+com.mycompany.b.l.db.Customer@5af97850
+com.mycompany.b.l.db.Customer@5ef60048
+com.mycompany.b.l.db.Customer@1d548a08
+com.mycompany.b.l.db.Customer@16aa0a0a
+com.mycompany.b.l.db.Customer@780cb77
+com.mycompany.b.l.db.Customer@691a7f8f
+com.mycompany.b.l.db.Customer@50a7bc6e
+com.mycompany.b.l.db.Customer@161b062a
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateCustomer" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.014">
+  <testcase name="testUpdateCustomer" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.039">
     <system-out><![CDATA[updateCustomer
 ]]></system-out>
   </testcase>
-  <testcase name="testIsEmailExists" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.002">
+  <testcase name="testAuthenticateCustomer_Failed" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.0">
+    <system-out><![CDATA[testAuthenticateCustomer_Failed
+]]></system-out>
+  </testcase>
+  <testcase name="testIsEmailExists" classname="com.mycompany.b.l.db.CustomerDAOTest" time="0.005">
     <system-out><![CDATA[isEmailExists
 ]]></system-out>
   </testcase>

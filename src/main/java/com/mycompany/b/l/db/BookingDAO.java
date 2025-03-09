@@ -28,7 +28,7 @@ public class BookingDAO {
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
     // Add a new booking
-    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, int carID, int driverID) {
+    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID) {
     String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     try (Connection conn = dbConnection.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

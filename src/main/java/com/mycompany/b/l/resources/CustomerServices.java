@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Path("customers")
+import javax.json.Json;
+
+    @Path("customers")
 public class CustomerServices {
     private static final Logger logger = Logger.getLogger(CustomerServices.class.getName());
     private static final Gson gson = GsonUtil.getGson(); // Use global Gson instance
@@ -188,4 +190,44 @@ public class CustomerServices {
                     .build();
         }
     }
+  @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(Customer customer) {
+        CustomerDAO customerDAO = new CustomerDAO();
+        Customer authenticatedCustomer = customerDAO.authenticateCustomer(customer.getUsername(), customer.getPasswordHash());
+
+        if (authenticatedCustomer != null) {
+            javax.json.JsonObject jsonResponse = Json.createObjectBuilder()
+                .add("id", authenticatedCustomer.getCustomerID())
+                .add("message", "Login successful")
+                .build();
+
+            return Response.ok(jsonResponse)
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
+        } else {
+            javax.json.JsonObject errorResponse = Json.createObjectBuilder()
+                .add("error", "Invalid username or password")
+                .build();
+
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(errorResponse)
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
+        }
+    }
+
+    @OPTIONS
+    @Path("/login")
+    public Response preflight() {
+        return Response.ok()
+            .header("Access-Control-Allow-Origin", "*")
+            .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            .header("Access-Control-Allow-Headers", "Content-Type")
+            .build();
+    }
+    
+
 }

@@ -213,4 +213,38 @@ public class CustomerDAOTest {
             assertFalse(customers.isEmpty());
         }
     }
+       @Test
+    public void testAuthenticateCustomer_Successful() {
+        System.out.println("testAuthenticateCustomer_Successful");
+
+        // Arrange
+        CustomerDAO customerDAO = new CustomerDAO();
+        String username = "john_doe"; // Replace with a valid username from your database
+        String passwordHash = "hash123"; // Replace with the corresponding password hash
+
+        // Act
+        Customer result = customerDAO.authenticateCustomer(username, passwordHash);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(username, result.getUsername());
+        assertEquals(passwordHash, result.getPasswordHash());
+        // Add more assertions to validate other fields if needed
+    }
+
+    @Test
+    public void testAuthenticateCustomer_Failed() {
+        System.out.println("testAuthenticateCustomer_Failed");
+
+        // Arrange
+        CustomerDAO customerDAO = new CustomerDAO();
+        String username = "nonExistentUser"; // Use a username that doesn't exist
+        String passwordHash = "wrongPasswordHash"; // Use an incorrect password hash
+
+        // Act
+        Customer result = customerDAO.authenticateCustomer(username, passwordHash);
+
+        // Assert
+        assertNull(result); // Expect null because authentication should fail
+    }
 }

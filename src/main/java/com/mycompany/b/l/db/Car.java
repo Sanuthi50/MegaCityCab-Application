@@ -17,6 +17,9 @@ public class Car {
     private BigDecimal mileage;
     private Status status;
     private Integer driverID;
+    private double price;
+    private double discount;
+    private double tax;
     
 
     // Default constructor (required for serialization/deserialization)
@@ -24,7 +27,7 @@ public class Car {
     }
 
     // Constructor with all fields
-    public Car(int carID, String licensePlate, String model, String make, int year, int capacity, FuelType fuelType, boolean availability, LocalDate lastServiceDate, LocalDate insuranceExpiryDate, BigDecimal mileage, Status status, Integer driverID) {
+    public Car(int carID, String licensePlate, String model, String make, int year, int capacity, FuelType fuelType, boolean availability, LocalDate lastServiceDate, LocalDate insuranceExpiryDate, BigDecimal mileage, Status status, Integer driverID,double price,Double discount,Double tax) {
         this.carID = carID;
         this.licensePlate = licensePlate;
         this.model = model;
@@ -38,6 +41,9 @@ public class Car {
         this.mileage = mileage;
         this.status = status;
         this.driverID = driverID;
+        this.price = price;
+        this.tax = tax;
+        this.discount = discount;
       
     }
 
@@ -201,7 +207,29 @@ public class Car {
         this.driverID = driverID;
     }
 
-    
+        public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
+    }
 
   
     @Override
@@ -220,6 +248,10 @@ public class Car {
                 ", mileage=" + mileage +
                 ", status=" + status +
                 ", driverID=" + driverID +
+                ", price=" + price +
+                ", dicount=" + discount +
+                ", tax=" + tax +
+                
               
                 '}';
     }

@@ -44,7 +44,7 @@ public class CarDBTest {
      @Test
     public void testAddCar() {
         LOGGER.info("Testing addCar method");
-       instance.addCar(0,"QCN762","Civic","Honda",2022,5,"Petrol",true,LocalDate.now(),LocalDate.now().plusYears(1),15000,"Available",12);
+       instance.addCar(0,"Q9062","Civic","Honda",2022,5,"Petrol",true,LocalDate.now(),LocalDate.now().plusYears(1),15000,"Available",12,200.00,0.2,0.9);
         Car result = instance.searchCar("QCN762");
         LOGGER.log(Level.FINE, "Added car with license: {0}", "QCN762");
         assertNotNull("Car should be added and found in database", result);
@@ -69,6 +69,7 @@ public class CarDBTest {
 
     // Update the car with carID = 88
     LOGGER.info("Updating car with carID: 88");
+    double price = 200.00;
     instance.updateCar(
         88,                  // carID (int)
         "PUL73",          // licensePlate (String)
@@ -82,7 +83,10 @@ public class CarDBTest {
         LocalDate.now().plusYears(1), // insuranceExpiryDate (LocalDate)
         null,               // mileage (Double)
         null,               // status (String)
-        null                // driverID (Integer)
+        null,               // driverID (Integer)
+        price,
+        null,
+        null
     );
 
     // Retrieve the updated car
@@ -163,4 +167,54 @@ public void testGetAllCars() {
 
     LOGGER.info("testGetAllCars method completed successfully");
 }
+     @Test
+    public void testFetchAvailableCars_Successful() {
+    System.out.println("testFetchAvailableCars_Successful");
+
+    // Arrange
+    CarDB carDB = new CarDB();
+
+    // Act
+    List<Car> availableCars = carDB.FetchAvailableCars();
+
+    // Assert
+    assertNotNull(availableCars); // Ensure the list is not null
+    assertFalse(availableCars.isEmpty()); // Ensure the list is not empty
+
+    // Validate each car in the list
+    for (Car car : availableCars) {
+        assertNotNull(car); // Ensure the car object itself is not null
+
+        // Ensure the car status is "Available"
+        assertEquals("AVAILABLE", car.getStatus().toString());
+
+        // Required fields (must not be null)
+        assertNotNull(car.getCarID());
+        assertNotNull(car.getLicensePlate());
+        assertNotNull(car.getModel());
+        assertNotNull(car.getMake());
+        assertNotNull(car.getYear());
+        assertNotNull(car.getCapacity());
+
+        // Optional fields (can be null or empty)
+        
+        if (car.getFuelType() == null) {
+            System.out.println("FuelType is null, which is allowed for this test.");
+        }
+        if (car.getLastServiceDate() == null) {
+            System.out.println("LastServiceDate is null, which is allowed for this test.");
+        }
+        if (car.getInsuranceExpiryDate() == null) {
+            System.out.println("InsuranceExpiryDate is null, which is allowed for this test.");
+        }
+        if (car.getMileage() == null) {
+            System.out.println("Mileage is null, which is allowed for this test.");
+        }
+        if (car.getDriverID() == null) {
+            System.out.println("DriverID is null, which is allowed for this test.");
+        }
+    }
+}
+
+    
 }

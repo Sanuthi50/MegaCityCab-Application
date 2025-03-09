@@ -11,9 +11,8 @@ import java.util.List;
 
 public class CustomerDAO {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/megacitycab?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASS = "Admin";
+    // Use the Singleton DatabaseConnection instance
+    private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
     // Query to fetch all customers
     private static final String SELECT_ALL_QUERY = "SELECT * FROM Customers";
@@ -41,7 +40,7 @@ public class CustomerDAO {
         List<Customer> customers = new ArrayList<>();
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn =dbConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(SELECT_ALL_QUERY)) {
 
@@ -70,7 +69,7 @@ public class CustomerDAO {
     public Customer getCustomerById(int customerID) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_ID_QUERY)) {
 
             pstmt.setInt(1,customerID);
@@ -101,7 +100,7 @@ public class CustomerDAO {
     public boolean addCustomer(Customer customer) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(INSERT_QUERY)) {
 
             pstmt.setInt(1, customer.getCustomerID());
@@ -127,7 +126,7 @@ public class CustomerDAO {
     public boolean updateCustomer(Customer customer) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(UPDATE_QUERY)) {
 
             pstmt.setString(1, customer.getUsername());
@@ -153,7 +152,7 @@ public class CustomerDAO {
     public boolean deleteCustomer(int customerID) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(DELETE_QUERY)) {
 
             pstmt.setInt(1, customerID);
@@ -169,7 +168,7 @@ public class CustomerDAO {
     public boolean isUsernameExists(String username) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(CHECK_USERNAME_QUERY)) {
 
             pstmt.setString(1, username);
@@ -189,7 +188,7 @@ public class CustomerDAO {
     public boolean isEmailExists(String email) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(CHECK_EMAIL_QUERY)) {
 
             pstmt.setString(1, email);
@@ -212,7 +211,7 @@ public class CustomerDAO {
 
         String SEARCH_QUERY = "SELECT * FROM Customers WHERE Name LIKE ? OR Email LIKE ? OR PhoneNumber LIKE ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SEARCH_QUERY)) {
 
             pstmt.setString(1, "%" + searchTerm + "%");
@@ -241,4 +240,36 @@ public class CustomerDAO {
         }
         return customers;
     }
+    public Customer authenticateCustomer(String username, String password) {
+    Customer customer = null;
+    String sql = "SELECT* FROM customers WHERE username = ? AND passwordHash = ?";
+    
+    try (Connection conn = dbConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+         
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            customer = new Customer();
+            customer.setCustomerID(rs.getInt("CustomerID"));
+            customer.setUsername(rs.getString("Username"));
+            customer.setPasswordHash(rs.getString("PasswordHash"));
+            customer.setName(rs.getString("Name"));
+            customer.setAddress(rs.getString("Address"));
+            customer.setNic(rs.getString("NIC"));
+            customer.setPhoneNumber(rs.getString("PhoneNumber"));
+            customer.setEmail(rs.getString("Email"));
+            customer.setRegistrationDate(rs.getTimestamp("RegistrationDate").toLocalDateTime());
+            customer.setTotalBookings(rs.getInt("TotalBookings"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return customer;
+}
+
 }
