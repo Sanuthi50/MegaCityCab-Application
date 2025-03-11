@@ -37,51 +37,62 @@ public class DriverDBTest {
             System.out.println(driver);
         }
     }
+        @Test
+     public void testGetDriverByCarId() {
+        System.out.println("getDriverByCarId");
+        DriverDB instance = new DriverDB();
+        int carID = 78; // Replace with a valid car ID from your test database
+        Driver result = instance.getDriverByCarId(carID);
+        assertNotNull(result); // Ensure a driver is returned
+        assertEquals(carID, result.getAssignedCarID()); // Ensure the driver is assigned to the correct car
+    }
 
     @Test
     public void testGetDriverById() {
         System.out.println("getDriverById");
 
-        int driverID = 1;
+        int driverID = 5;
         DriverDB instance = new DriverDB();
 
         Driver result = instance.getDriverById(driverID);
         assertNotNull("Driver should be found", result);
     }
-/*
-    @Test
+
+    /*@Test
     public void testDeleteDriver() {
         System.out.println("deleteDriver");
 
-        int driverID = 21;
+        int driverID = 30;
         DriverDB instance = new DriverDB();
         boolean result = instance.deleteDriver(driverID);
 
         assertTrue("Driver should be deleted successfully", result);
     }
 
-    @Test
+   @Test
     public void testAddDriver() {
         System.out.println("addDriver");
 
         Driver driver = new Driver(
             0,
             "Taylor Swift",
-            "19222399V",
-            "C21344",
+            "19008899V",
+            "C90990",
             LocalDate.of(2028, 12, 20),
-            "0765678765",
+            "076560075",
             "1288, Main2 St, USA",
-            "Taylor@gmail.com",
+            "TaylorSwift@gmail.com",
             LocalDate.of(1985, 8, 15),
             Driver.Gender.Female,
-            8,
             true,
             5,
             4.50,
             LocalDate.of(2025, 2, 1),
-            "0712987645679",
-            320000.0
+            "07129879",
+            32000.00,
+            75,
+            "taylor_swift",  // username
+            "password123"     // password
         );
 
         System.out.println("Driver name from test: " + driver.getName());
@@ -90,7 +101,8 @@ public class DriverDBTest {
         boolean result = instance.addDriver(driver);
         assertTrue("Driver should be added successfully", result);
     }
-*/
+    */
+
     @Test
     public void testUpdateDriver() {
         System.out.println("updateDriver");
@@ -98,7 +110,7 @@ public class DriverDBTest {
         DriverDB driverDB = new DriverDB();  
         int driverID = 4;
         
-       Driver driver = new Driver(
+        Driver driver = new Driver(
             driverID,
             "Updated Name",
             "665555V",
@@ -109,15 +121,16 @@ public class DriverDBTest {
             "updatedemail@example.com",
             LocalDate.of(1985, 5, 12),
             Driver.Gender.Male,
-            111,
             true,
             10,
             4.5,
             LocalDate.of(2025, 1, 25),
             "911",
-            50000.00
+            50000.00,
+            76,
+            "updated_username",  // username
+            "updated_password"   // password
         );
-
 
         boolean result = driverDB.updateDriver(driver);
         assertTrue("Driver update failed", result);
@@ -140,6 +153,43 @@ public class DriverDBTest {
         assertEquals(LocalDate.of(2025, 1, 25), updatedDriver.getLastTripDate());
         assertEquals("911", updatedDriver.getEmergencyContact());
         assertEquals(50000.00, updatedDriver.getSalary(), 0.01);
-        assertEquals(111, updatedDriver.getAssignedCarID());
+        assertEquals(76, updatedDriver.getAssignedCarID());
+        assertEquals("updated_username", updatedDriver.getUsername());
+        assertEquals("updated_password", updatedDriver.getPassword());
     }
+     @Test
+    public void testAuthenticateDriver_Successful() {
+        System.out.println("testAuthenticateDriver_Successful");
+
+        // Arrange
+        DriverDB driverdb = new DriverDB();
+        String username = "user3"; // Replace with a valid username from your database
+        String password = "p3"; // Replace with the corresponding password hash
+
+        // Act
+        Driver result = driverdb.authenticateDriver(username, password);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(username, result.getUsername());
+        assertEquals(password, result.getPassword());
+        // Add more assertions to validate other fields if needed
+    }
+
+    @Test
+    public void testAuthenticateDriver_Failed() {
+        System.out.println("testAuthenticateDriver_Failed");
+
+        // Arrange
+       DriverDB driverdb = new DriverDB();
+        String username = "nonExistentUser"; // Use a username that doesn't exist
+        String password = "wrongPasswordHash"; // Use an incorrect password hash
+
+        // Act
+        Driver result = driverdb.authenticateDriver(username, password);
+
+        // Assert
+        assertNull(result); // Expect null because authentication should fail
+    }
+
 }

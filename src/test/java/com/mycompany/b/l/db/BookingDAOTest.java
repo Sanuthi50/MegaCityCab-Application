@@ -65,9 +65,10 @@ public class BookingDAOTest {
         Status status = Status.Completed; // Use the enum
         int carID = 86;
         int driverID = 12;
+        double distance =1.1;
 
         // Add the booking and get the generated ID
-        int bookingId = bookingDAO.addBooking(customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID);
+        int bookingId = bookingDAO.addBooking(customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID , distance);
         assertTrue(bookingId > 0); // Ensure the ID is valid
 
         // Retrieve the booking to verify it was added
@@ -145,10 +146,10 @@ public class BookingDAOTest {
     public void testUpdateBooking() {
         System.out.println("updateBooking");
         // Add a test booking
-        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 1, 1);
+        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 78, 12,1.1);
 
         // Update the booking
-        bookingDAO.updateBooking(7, 1, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()), "Confirmed", 86, 12);
+        bookingDAO.updateBooking(7, 1, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()), "Confirmed", 86, 12,1.1);
 
         // Retrieve the updated booking
         Booking result = bookingDAO.getBookingById(7);
@@ -164,7 +165,7 @@ public class BookingDAOTest {
     public void testDeleteBooking() {
         System.out.println("deleteBooking");
         // Add a test booking
-        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()),Status.Pending, 80, 12);
+        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()),Status.Pending, 80, 12,9.0);
 
         // Delete the booking
         bookingDAO.deleteBooking(1);
@@ -237,7 +238,7 @@ public void testGetBookingsByDriverId() {
     public void testGetBookingsWithNullDriverId() {
         System.out.println("getBookingsWithNullDriverId");
         // Add a test booking with no driver ID
-        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()),Status.Completed, 122, 12);
+        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()),Status.Completed, 122, 12,3.0);
 
         // Retrieve bookings with null driver ID
         List<Booking> result = bookingDAO.getBookingsWithNullDriverId();
@@ -306,8 +307,8 @@ public void testGetBookingsByCarId() {
     System.out.println("getBookingsByCarId");
     
     // Add test bookings for car ID 1
-    bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 86, 12);
-    bookingDAO.addBooking(2, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 86, 12);
+    bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 86, 12,7.9);
+    bookingDAO.addBooking(2, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 86, 12,9.0);
 
     // Retrieve bookings by car ID
     List<Booking> result = bookingDAO.getBookingsByCarId(86);
@@ -336,8 +337,8 @@ public void testGetBookingsByCarId() {
         Timestamp endDate = new Timestamp(System.currentTimeMillis() + 10000); // 10 seconds from now
 
         // Add test bookings within the date range
-        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 80, 4);
-        bookingDAO.addBooking(2, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()),Status.Confirmed, 80, 4);
+        bookingDAO.addBooking(1, "New York", "Los Angeles", 100.0, 10.0, 5.0, new Timestamp(System.currentTimeMillis()), Status.Completed, 80, 4,8.9);
+        bookingDAO.addBooking(2, "Chicago", "Miami", 200.0, 20.0, 10.0, new Timestamp(System.currentTimeMillis()),Status.Confirmed, 80, 4,9.8);
 
         // Retrieve bookings by date range
         List<Booking> result = bookingDAO.getBookingsByDateRange(startDate, endDate);

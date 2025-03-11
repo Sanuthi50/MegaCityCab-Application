@@ -5,12 +5,14 @@
 package com.mycompany.b.l.db;
 
 import com.mycompany.b.l.db.Booking.Status;
+import static com.mysql.cj.conf.PropertyKey.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,8 +30,8 @@ public class BookingDAO {
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
     // Add a new booking
-    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID) {
-    String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID,double distance) {
+    String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID,distance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     try (Connection conn = dbConnection.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -40,9 +42,21 @@ public class BookingDAO {
         pstmt.setDouble(5, discount);
         pstmt.setDouble(6, tax);
         pstmt.setTimestamp(7, bookingDate);
-        pstmt.setString(8, status.name()); // Convert enum to String
-        pstmt.setInt(9, carID);
-        pstmt.setInt(10, driverID);
+        pstmt.setString(8, status.name());
+         pstmt.setDouble(11, distance);// Convert enum to String
+
+        // Handle null values for carID and driverID
+        if (carID != null) {
+            pstmt.setInt(9, carID);
+        } else {
+            pstmt.setNull(9, Types.INTEGER);
+        }
+
+        if (driverID != null) {
+            pstmt.setInt(10, driverID);
+        } else {
+            pstmt.setNull(10, Types.INTEGER);
+        }
 
         int affectedRows = pstmt.executeUpdate();
         if (affectedRows > 0) {
@@ -53,7 +67,8 @@ public class BookingDAO {
             }
         }
     } catch (SQLException e) {
-        e.printStackTrace();
+        // Log the exception instead of printing the stack trace
+        LOG.log(Level.SEVERE, "SQL error while adding booking", e);
     }
     return -1; // Return -1 if insertion fails
 }
@@ -79,7 +94,8 @@ public class BookingDAO {
                     rs.getTimestamp("BookingDate"),
                     Status.fromString(rs.getString("Status")), // Convert string to enum
                     rs.getInt("CarID"),
-                    rs.getInt("DriverID")
+                    rs.getInt("DriverID"),
+                    rs.getDouble("Distance")
                 );
             }
         } catch (SQLException e) {
@@ -110,7 +126,8 @@ public class BookingDAO {
                     rs.getTimestamp("BookingDate"),
                    Status.fromString(rs.getString("Status")),
                     rs.getInt("CarID"),
-                    rs.getInt("DriverID")
+                    rs.getInt("DriverID"),
+                        rs.getDouble("Distance")
                 );
                 bookingList.add(booking);
             }
@@ -121,52 +138,52 @@ public class BookingDAO {
         return bookingList;
     }
 
-    // Update a booking
     public void updateBooking(int bookingID, Integer customerID, String pickupLocation, String dropLocation, Double price, Double discount, Double tax,
-                              Timestamp bookingDate, String status, Integer carID, Integer driverID) {
-        StringBuilder query = new StringBuilder("UPDATE bookings SET ");
-        List<Object> parameters = new ArrayList<>();
-        boolean hasFieldsToUpdate = false;
+                          Timestamp bookingDate, String status, Integer carID, Integer driverID, Double distance) {
+    StringBuilder query = new StringBuilder("UPDATE bookings SET ");
+    List<Object> parameters = new ArrayList<>();
+    boolean hasFieldsToUpdate = false;
 
-        // Dynamically build the query based on provided fields
-        if (customerID != null) { query.append("CustomerID = ?, "); parameters.add(customerID); hasFieldsToUpdate = true; }
-        if (pickupLocation != null) { query.append("PickupLocation = ?, "); parameters.add(pickupLocation); hasFieldsToUpdate = true; }
-        if (dropLocation != null) { query.append("DropLocation = ?, "); parameters.add(dropLocation); hasFieldsToUpdate = true; }
-        if (price != null) { query.append("Price = ?, "); parameters.add(price); hasFieldsToUpdate = true; }
-        if (discount != null) { query.append("Discount = ?, "); parameters.add(discount); hasFieldsToUpdate = true; }
-        if (tax != null) { query.append("Tax = ?, "); parameters.add(tax); hasFieldsToUpdate = true; }
-        if (bookingDate != null) { query.append("BookingDate = ?, "); parameters.add(bookingDate); hasFieldsToUpdate = true; }
-        if (status != null) { query.append("Status = ?, "); parameters.add(status); hasFieldsToUpdate = true; }
-        if (carID != null) { query.append("CarID = ?, "); parameters.add(carID); hasFieldsToUpdate = true; }
-        if (driverID != null) { query.append("DriverID = ?, "); parameters.add(driverID); hasFieldsToUpdate = true; }
+    // Dynamically build the query based on provided fields
+    if (customerID != null) { query.append("CustomerID = ?, "); parameters.add(customerID); hasFieldsToUpdate = true; }
+    if (pickupLocation != null) { query.append("PickupLocation = ?, "); parameters.add(pickupLocation); hasFieldsToUpdate = true; }
+    if (dropLocation != null) { query.append("DropLocation = ?, "); parameters.add(dropLocation); hasFieldsToUpdate = true; }
+    if (price != null) { query.append("Price = ?, "); parameters.add(price); hasFieldsToUpdate = true; }
+    if (discount != null) { query.append("Discount = ?, "); parameters.add(discount); hasFieldsToUpdate = true; }
+    if (tax != null) { query.append("Tax = ?, "); parameters.add(tax); hasFieldsToUpdate = true; }
+    if (bookingDate != null) { query.append("BookingDate = ?, "); parameters.add(bookingDate); hasFieldsToUpdate = true; }
+    if (status != null) { query.append("Status = ?, "); parameters.add(status); hasFieldsToUpdate = true; }
+    if (carID != null) { query.append("CarID = ?, "); parameters.add(carID); hasFieldsToUpdate = true; }
+    if (driverID != null) { query.append("DriverID = ?, "); parameters.add(driverID); hasFieldsToUpdate = true; }
+    if (distance != null) { query.append("Distance = ?, "); parameters.add(distance); hasFieldsToUpdate = true; }
 
-        if (!hasFieldsToUpdate) {
-            LOG.warning("No fields provided for update.");
-            return;
-        }
-
-        query.setLength(query.length() - 2); // Remove trailing ", "
-        query.append(" WHERE BookingID = ?");
-        parameters.add(bookingID);
-
-        try (Connection conn = dbConnection.getConnection(); // Use Singleton connection
-             PreparedStatement pstmt = conn.prepareStatement(query.toString())) {
-
-            for (int i = 0; i < parameters.size(); i++) {
-                pstmt.setObject(i + 1, parameters.get(i));
-            }
-
-            int rowsUpdated = pstmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                LOG.info("Booking updated successfully.");
-            } else {
-                LOG.warning("No booking found with BookingID: " + bookingID);
-            }
-        } catch (SQLException e) {
-            LOG.log(Level.SEVERE, "Error updating booking: " + e.getMessage(), e);
-        }
+    if (!hasFieldsToUpdate) {
+        LOG.warning("No fields provided for update.");
+        return;
     }
 
+    // Remove the trailing comma and space
+    query.setLength(query.length() - 2); 
+    query.append(" WHERE BookingID = ?");
+    parameters.add(bookingID);
+
+    try (Connection conn = dbConnection.getConnection(); // Use Singleton connection
+         PreparedStatement pstmt = conn.prepareStatement(query.toString())) {
+
+        for (int i = 0; i < parameters.size(); i++) {
+            pstmt.setObject(i + 1, parameters.get(i));
+        }
+
+        int rowsUpdated = pstmt.executeUpdate();
+        if (rowsUpdated > 0) {
+            LOG.info("Booking updated successfully.");
+        } else {
+            LOG.warning("No booking found with BookingID: " + bookingID);
+        }
+    } catch (SQLException e) {
+        LOG.log(Level.SEVERE, "Error updating booking with BookingID: " + bookingID, e);
+    }
+}
     // Delete a booking
     public void deleteBooking(int bookingID) {
         String query = "DELETE FROM bookings WHERE BookingID = ?";
@@ -205,7 +222,8 @@ public class BookingDAO {
                     rs.getTimestamp("BookingDate"),
                     Status.fromString(rs.getString("Status")),// Convert string to enum
                     rs.getInt("CarID"),
-                    rs.getInt("DriverID")
+                    rs.getInt("DriverID"),
+                    rs.getDouble("Distance")
                 );
                 bookingList.add(booking);
             }
@@ -439,7 +457,9 @@ public class BookingDAO {
                     resultSet.getTimestamp("BookingDate"),
                     Status.fromString(resultSet.getString("Status")),
                     resultSet.getInt("CarID"),
-                    resultSet.getInt("DriverID")
+                    resultSet.getInt("DriverID"),
+                    resultSet.getDouble("Distance")
+                    
             );
         }
 

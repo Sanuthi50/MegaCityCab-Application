@@ -22,6 +22,7 @@ public class Booking {
     private Status status; // Changed to enum type
     private Integer carId;
     private Integer driverId;
+    private double distance;
 
    
 
@@ -45,7 +46,7 @@ public class Booking {
     // Constructor
     public Booking(int bookingId, int customerId, String pickupLocation, String dropLocation,
                    double price, double discount, double tax, Timestamp bookingDate,
-                   Status status, Integer carId, Integer driverId) {
+                   Status status, Integer carId, Integer driverId,double distance) {
         this.bookingId = bookingId;
         this.customerId = customerId;
         this.pickupLocation = pickupLocation;
@@ -57,7 +58,9 @@ public class Booking {
         this.status = status;
         this.carId = carId;
         this.driverId = driverId;
+        this.distance = distance;
     }
+    
 
     // Getters and Setters
     public int getBookingId() {
@@ -74,6 +77,14 @@ public class Booking {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+    
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public String getPickupLocation() {
