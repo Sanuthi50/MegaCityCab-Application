@@ -31,57 +31,79 @@ public class BookingServices {
     private final BookingDAO bookingDAO = new BookingDAO(); // Booking database handler
 
     // Add a new booking
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addBooking(String json) {
-        try {
-            logger.info("Incoming JSON: " + json);
-            JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-            if (jsonObject == null || !jsonObject.has("customerID") || !jsonObject.has("pickupLocation") ||
-                !jsonObject.has("dropLocation") || !jsonObject.has("price") || !jsonObject.has("status") ||
-                !jsonObject.has("carID")) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"error\": \"Missing required fields\"}")
-                        .build();
-            }
-
-            Booking booking = gson.fromJson(json, Booking.class);
-            int bookingId = bookingDAO.addBooking(
-                booking.getCustomerId(),
-                booking.getPickupLocation(),
-                booking.getDropLocation(),
-                booking.getPrice(),
-                booking.getDiscount(),
-                booking.getTax(),
-                booking.getBookingDate(),
-                booking.getStatus(),
-                booking.getCarId(),
-                booking.getDriverId()
-            );
-
-            if (bookingId != -1) {
-                return Response.status(Response.Status.CREATED)
-                        .entity("{\"message\": \"Booking added successfully\", \"bookingId\": " + bookingId + "}")
-                        .build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("{\"error\": \"Failed to add booking\"}")
-                        .build();
-            }
-        } catch (JsonSyntaxException e) {
-            logger.log(Level.SEVERE, "JSON syntax error", e);
+   @POST
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Response addBooking(String json) {
+    try {
+        if (json == null || json.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\": \"Invalid JSON format\"}")
-                    .build();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error adding booking", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\": \"Internal server error\"}")
+                    .entity("{\"error\": \"Empty or null JSON\"}")
                     .build();
         }
-    }
 
+        logger.info("Incoming JSON: " + json);
+
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        if (jsonObject == null || !jsonObject.has("customerID") || !jsonObject.has("pickupLocation") ||
+            !jsonObject.has("dropLocation") || !jsonObject.has("price") || !jsonObject.has("status") ||
+            !jsonObject.has("carID")) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Missing required fields\"}")
+                    .build();
+        }
+
+        // Additional validation for field values
+        if (jsonObject.get("customerID").getAsString().isEmpty() ||
+            jsonObject.get("pickupLocation").getAsString().isEmpty() ||
+            jsonObject.get("dropLocation").getAsString().isEmpty() ||
+            jsonObject.get("price").getAsDouble() <= 0 ||
+            jsonObject.get("status").getAsString().isEmpty() ||
+            jsonObject.get("carID").getAsString().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Invalid field values\"}")
+                    .build();
+        }
+
+        Booking booking = gson.fromJson(json, Booking.class);
+        int bookingId = bookingDAO.addBooking(
+            booking.getCustomerId(),
+            booking.getPickupLocation(),
+            booking.getDropLocation(),
+            booking.getPrice(),
+            booking.getDiscount(),
+            booking.getTax(),
+            booking.getBookingDate(),
+            booking.getStatus(),
+            booking.getCarId(),
+            booking.getDriverId(),
+            booking.getDistance()
+        );
+
+        if (bookingId != -1) {
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("message", "Booking added successfully");
+            responseJson.addProperty("bookingId", bookingId);
+            return Response.status(Response.Status.CREATED)
+                    .entity(responseJson.toString())
+                    .build();
+        } else {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\": \"Failed to add booking\"}")
+                    .build();
+        }
+    } catch (JsonSyntaxException e) {
+        logger.log(Level.SEVERE, "JSON syntax error", e);
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\": \"Invalid JSON format\"}")
+                .build();
+    } catch (Exception e) {
+        logger.log(Level.SEVERE, "Error adding booking", e);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"error\": \"Internal server error\"}")
+                .build();
+    }
+}
     // Get a booking by ID
     @GET
     @Path("{id}")
@@ -144,7 +166,8 @@ public class BookingServices {
                 booking.getBookingDate(),
                 booking.getStatus().name(),
                 booking.getCarId(),
-                booking.getDriverId()
+                booking.getDriverId(),
+                booking.getDistance()
             );
 
             return Response.ok("{\"message\": \"Booking updated successfully\"}").build();

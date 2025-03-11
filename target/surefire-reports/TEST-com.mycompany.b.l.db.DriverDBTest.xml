@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.DriverDBTest" time="0.016" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.DriverDBTest" time="0.034" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="netbeans.deploy" value="true"/>
     <property name="file.encoding.pkg" value="sun.io"/>
     <property name="java.specification.version" value="1.8"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -18,7 +19,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire7980741022217314830\surefirebooter-20250309151205324_3.jar C:\Users\User\AppData\Local\Temp\surefire7980741022217314830 2025-03-09T15-12-05_002-jvmRun1 surefire-20250309151205324_1tmp surefire_0-20250309151205324_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire7491234248894691806\surefirebooter-20250311141908529_3.jar C:\Users\User\AppData\Local\Temp\surefire7491234248894691806 2025-03-11T14-19-08_022-jvmRun1 surefire-20250311141908529_1tmp surefire_0-20250311141908529_2tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\User\Downloads\B.L\target\test-classes;C:\Users\User\Downloads\B.L\target\classes;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\User\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\User\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar;C:\Users\User\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\User\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\User\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\User\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\User\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;C:\Users\User\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\User"/>
@@ -32,10 +33,11 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire7980741022217314830\surefirebooter-20250309151205324_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire7491234248894691806\surefirebooter-20250311141908529_3.jar"/>
     <property name="sun.boot.class.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\resources.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\rt.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\sunrsasign.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jsse.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jce.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\charsets.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jfr.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\cat.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="netbeans.deploy.clientUrlPart" value="/index.html"/>
     <property name="java.runtime.version" value="1.8.0_442-b06"/>
     <property name="user.name" value="User"/>
     <property name="path.separator" value=";"/>
@@ -63,34 +65,49 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testGetDriverById" classname="com.mycompany.b.l.db.DriverDBTest" time="0.002">
+  <testcase name="testGetDriverById" classname="com.mycompany.b.l.db.DriverDBTest" time="0.011">
     <system-out><![CDATA[getDriverById
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateDriver" classname="com.mycompany.b.l.db.DriverDBTest" time="0.004">
+  <testcase name="testUpdateDriver" classname="com.mycompany.b.l.db.DriverDBTest" time="0.006">
     <system-out><![CDATA[updateDriver
 ]]></system-out>
-    <system-err><![CDATA[Mar 09, 2025 3:12:07 PM com.mycompany.b.l.db.DriverDB updateDriver
+    <system-err><![CDATA[Mar 11, 2025 2:19:13 PM com.mycompany.b.l.db.DriverDB updateDriver
 INFO: Driver updated successfully: 4
 ]]></system-err>
   </testcase>
-  <testcase name="testGetAllDrivers" classname="com.mycompany.b.l.db.DriverDBTest" time="0.003">
-    <system-out><![CDATA[getAllDrivers
-Driver [driverID=1, name=John Doe, nic=123456789V, licenseNumber=LIC123456, licenseExpiryDate=2025-12-31, phoneNumber=07123456789, address=123 Main St, Colombo, email=john.doe@example.com, dateOfBirth=1990-05-15, gender=Male, assignedCarID=0, availability=false, yearsOfExperience=5, rating=4.5, lastTripDate=2023-10-01, emergencyContact=07123456780, salary=50000.0]
-Driver [driverID=4, name=Updated Name, nic=665555V, licenseNumber=AB1234567, licenseExpiryDate=2025-12-31, phoneNumber=077736366726, address=123 New Street, City, email=updatedemail@example.com, dateOfBirth=1985-05-12, gender=Male, assignedCarID=111, availability=true, yearsOfExperience=10, rating=4.5, lastTripDate=2025-01-25, emergencyContact=911, salary=50000.0]
-Driver [driverID=5, name=Robert Wilson, nic=567890123V, licenseNumber=B5678901, licenseExpiryDate=2029-07-30, phoneNumber=0775678901, address=753 Maple Lane, City, email=robertw@email.com, dateOfBirth=1988-06-21, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=12, rating=4.7, lastTripDate=2025-02-02, emergencyContact=072, salary=49000.0]
-Driver [driverID=7, name=David Martinez, nic=789012345V, licenseNumber=B7890123, licenseExpiryDate=2027-09-18, phoneNumber=0777890123, address=369 Cedar Rd, City, email=davidm@email.com, dateOfBirth=1987-04-19, gender=Male, assignedCarID=0, availability=false, yearsOfExperience=11, rating=4.8, lastTripDate=2025-02-07, emergencyContact=179, salary=51000.0]
-Driver [driverID=9, name=Daniel Harris, nic=901234567V, licenseNumber=B9012345, licenseExpiryDate=2028-01-12, phoneNumber=0779012345, address=258 Redwood St, City, email=danielh@email.com, dateOfBirth=1991-10-10, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=9, rating=4.6, lastTripDate=2025-02-05, emergencyContact=079, salary=48500.0]
-Driver [driverID=10, name=Sophia Clark, nic=012345678V, licenseNumber=B0123456, licenseExpiryDate=2027-04-08, phoneNumber=0770123456, address=753 Chestnut Ln, City, email=sophiac@email.com, dateOfBirth=1989-05-15, gender=Female, assignedCarID=0, availability=true, yearsOfExperience=10, rating=4.7, lastTripDate=2025-02-06, emergencyContact=079, salary=49500.0]
-Driver [driverID=12, name=John Doe, nic=12398376456789V, licenseNumber=L12345678, licenseExpiryDate=2027-12-31, phoneNumber=0712345678, address=1234 Elm Street, City, email=johndoe@email.com, dateOfBirth=1985-06-15, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-12-20, emergencyContact=0771234567, salary=4000.0]
-Driver [driverID=23, name=Lewis davidson, nic=444444444444V, licenseNumber=44, licenseExpiryDate=2028-12-20, phoneNumber=07098765458, address=1234, Main St,uk, email=LewisHamilton@gmail.com, dateOfBirth=1985-08-15, gender=Male, assignedCarID=0, availability=false, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=0712345679, salary=3000.0]
-Driver [driverID=25, name=Carlos sainz, nic=112222333V, licenseNumber=gfd0982327, licenseExpiryDate=2028-12-20, phoneNumber=0796875553, address=12346, Main St,uk, email=carlossainz1@gmail.com, dateOfBirth=1985-08-15, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=0712987645679, salary=30000.0]
-Driver [driverID=26, name=Connan Gray, nic=19222333V, licenseNumber=gfd09867227, licenseExpiryDate=2028-12-20, phoneNumber=0709877777, address=1288, Main St,usa, email=ConnanGray@gmail.com, dateOfBirth=1985-08-15, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=0712987645679, salary=30000.0]
-Driver [driverID=29, name=Taylor Swift, nic=19222399V, licenseNumber=C21344, licenseExpiryDate=2028-12-20, phoneNumber=0765678765, address=1288, Main2 St, USA, email=Taylor@gmail.com, dateOfBirth=1985-08-15, gender=Female, assignedCarID=0, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=0712987645679, salary=320000.0]
-Driver [driverID=30, name=Chan, nic=900000000v, licenseNumber=1122223d, licenseExpiryDate=2025-12-02, phoneNumber=0719561082, address=Railway, email=X@gmail.com, dateOfBirth=2002-03-03, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=8, rating=5.0, lastTripDate=2025-01-02, emergencyContact=777, salary=60000.0]
+  <testcase name="testGetDriverByCarId" classname="com.mycompany.b.l.db.DriverDBTest" time="0.003">
+    <system-out><![CDATA[getDriverByCarId
 ]]></system-out>
-    <system-err><![CDATA[Mar 09, 2025 3:12:07 PM com.mycompany.b.l.db.DriverDB getAllDrivers
-INFO: Fetched 12 drivers from DB
+  </testcase>
+  <testcase name="testGetAllDrivers" classname="com.mycompany.b.l.db.DriverDBTest" time="0.008">
+    <system-out><![CDATA[getAllDrivers
+Driver [driverID=1, name=Jane Doe, nic=987654321V, licenseNumber=LIC67890, licenseExpiryDate=2026-12-31, phoneNumber=0987654321, address=456 Elm St, email=jane.doe@example.com, dateOfBirth=1995-05-05, gender=Female, assignedCarID=78, availability=false, yearsOfExperience=3, rating=4.0, lastTripDate=2023-09-01, emergencyContact=1234567890, salary=45000.0, username=janedoe, password=$2a$12$tF9g4230yABCAfZbyY8ov.HlwVttU2y9CuJJOT7koUklRDlSzvrQK]
+Driver [driverID=2, name=Taylor Swift, nic=19008899V, licenseNumber=C90990, licenseExpiryDate=2028-12-20, phoneNumber=076560075, address=1288, Main2 St, USA, email=TaylorSwift@gmail.com, dateOfBirth=1985-08-15, gender=Female, assignedCarID=75, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=07129879, salary=32000.0, username=taylor_swift, password=$2a$12$e8iBk6mDDeKv7Pwdp8i59.pXFAsD.7h4oUpq19RoD9/m9o800I1gO]
+Driver [driverID=3, name=Alice Johnson, nic=456789123V, licenseNumber=B98706543, licenseExpiryDate=2026-10-15, phoneNumber=0773456789, address=789 Oak St, Galle, email=alice.johnson@example.com, dateOfBirth=1988-03-12, gender=Female, assignedCarID=83, availability=true, yearsOfExperience=12, rating=4.8, lastTripDate=2023-10-05, emergencyContact=0775432109, salary=52000.0, username=alicejohnson, password=hashedpassword3]
+Driver [driverID=4, name=Updated Name, nic=665555V, licenseNumber=AB1234567, licenseExpiryDate=2025-12-31, phoneNumber=077736366726, address=123 New Street, City, email=updatedemail@example.com, dateOfBirth=1985-05-12, gender=Male, assignedCarID=76, availability=true, yearsOfExperience=10, rating=4.5, lastTripDate=2025-01-25, emergencyContact=911, salary=50000.0, username=updated_username, password=updated_password]
+Driver [driverID=5, name=Robert Wilson, nic=567890123V, licenseNumber=B5678901, licenseExpiryDate=2029-07-30, phoneNumber=0775678901, address=753 Maple Lane, City, email=robertw@email.com, dateOfBirth=1988-06-21, gender=Male, assignedCarID=0, availability=true, yearsOfExperience=12, rating=4.7, lastTripDate=2025-02-02, emergencyContact=072, salary=49000.0, username=user3, password=p3]
+Driver [driverID=6, name=Diana Evans, nic=789123456V, licenseNumber=P6789012, licenseExpiryDate=2025-07-30, phoneNumber=0766789012, address=987 Birch St, Anuradhapura, email=diana.evans@example.com, dateOfBirth=1992-04-22, gender=Female, assignedCarID=86, availability=true, yearsOfExperience=7, rating=4.6, lastTripDate=2023-09-29, emergencyContact=0772109876, salary=47000.0, username=dianaevans, password=hashedpassword6]
+Driver [driverID=7, name=Ethan Green, nic=987321654V, licenseNumber=B7890123, licenseExpiryDate=2026-06-15, phoneNumber=0767890123, address=123 Maple St, Polonnaruwa, email=ethan.green@example.com, dateOfBirth=1987-09-10, gender=Male, assignedCarID=87, availability=true, yearsOfExperience=9, rating=4.7, lastTripDate=2023-10-03, emergencyContact=0771098765, salary=49000.0, username=ethangreen, password=hashedpassword7]
+Driver [driverID=8, name=Fiona Harris, nic=654987321V, licenseNumber=T8901234, licenseExpiryDate=2024-05-20, phoneNumber=0728901234, address=456 Walnut St, Ratnapura, email=fiona.harris@example.com, dateOfBirth=1993-12-05, gender=Female, assignedCarID=88, availability=true, yearsOfExperience=6, rating=4.3, lastTripDate=2023-09-27, emergencyContact=0770987654, salary=46000.0, username=fionaharris, password=hashedpassword8]
+Driver [driverID=9, name=George Clark, nic=321987654V, licenseNumber=B9012345, licenseExpiryDate=2025-04-25, phoneNumber=0759012345, address=789 Cherry St, Badulla, email=george.clark@example.com, dateOfBirth=1984-06-20, gender=Male, assignedCarID=89, availability=true, yearsOfExperience=11, rating=4.85, lastTripDate=2023-10-04, emergencyContact=0779876543, salary=51000.0, username=georgeclark, password=hashedpassword9]
+Driver [driverID=10, name=Hannah Lewis, nic=123789456V, licenseNumber=B0123456, licenseExpiryDate=2026-03-30, phoneNumber=0790123456, address=321 Peach St, Matara, email=hannah.lewis@example.com, dateOfBirth=1991-02-14, gender=Female, assignedCarID=93, availability=true, yearsOfExperience=4, rating=4.1, lastTripDate=2023-09-26, emergencyContact=0778765432, salary=44000.0, username=lewis, password=lewis123]
+Driver [driverID=11, name=John Doe, nic=123456789V, licenseNumber=B1234567, licenseExpiryDate=2025-12-31, phoneNumber=0721234567, address=123 Main St, Colombo, email=john.doe@example.com, dateOfBirth=1985-05-15, gender=Male, assignedCarID=78, availability=true, yearsOfExperience=10, rating=4.75, lastTripDate=2023-10-01, emergencyContact=0777654321, salary=50000.0, username=johndoe, password=hashedpassword1]
+Driver [driverID=12, name=Jane Smith, nic=987650321V, licenseNumber=B7654321, licenseExpiryDate=2024-11-30, phoneNumber=0712345678, address=456 Elm St, Kandy, email=jane.smith@example.com, dateOfBirth=1990-08-25, gender=Female, assignedCarID=82, availability=true, yearsOfExperience=8, rating=4.5, lastTripDate=2023-09-28, emergencyContact=0776543210, salary=48000.0, username=janesmith, password=hashedpassword2]
+Driver [driverID=14, name=Bob Brown, nic=321654987V, licenseNumber=B4507890, licenseExpiryDate=2025-09-20, phoneNumber=0734567890, address=321 Pine St, Negombo, email=bob.brown@example.com, dateOfBirth=1982-11-30, gender=Male, assignedCarID=84, availability=true, yearsOfExperience=15, rating=4.9, lastTripDate=2023-09-30, emergencyContact=0774321098, salary=55000.0, username=bobbrown, password=hashedpassword4]
+Driver [driverID=15, name=Charlie Davis, nic=654123987V, licenseNumber=I5678901, licenseExpiryDate=2024-08-25, phoneNumber=0745678901, address=654 Cedar St, Jaffna, email=charlie.davis@example.com, dateOfBirth=1995-07-18, gender=Male, assignedCarID=85, availability=true, yearsOfExperience=5, rating=4.2, lastTripDate=2023-10-02, emergencyContact=0773210987, salary=45000.0, username=charliedavis, password=hashedpassword5]
+Driver [driverID=60, name=Zoe Young, nic=456123789V, licenseNumber=B6789012, licenseExpiryDate=2025-02-28, phoneNumber=0786789012, address=987 Spruce St, Trincomalee, email=zoe.young@example.com, dateOfBirth=1994-01-10, gender=Female, assignedCarID=94, availability=true, yearsOfExperience=3, rating=4.0, lastTripDate=2023-09-25, emergencyContact=0777654321, salary=43000.0, username=zoeyoung, password=hashedpassword60]
+]]></system-out>
+    <system-err><![CDATA[Mar 11, 2025 2:19:13 PM com.mycompany.b.l.db.DriverDB getAllDrivers
+INFO: Fetched 15 drivers from DB
 ]]></system-err>
+  </testcase>
+  <testcase name="testAuthenticateDriver_Successful" classname="com.mycompany.b.l.db.DriverDBTest" time="0.001">
+    <system-out><![CDATA[testAuthenticateDriver_Successful
+]]></system-out>
+  </testcase>
+  <testcase name="testAuthenticateDriver_Failed" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
+    <system-out><![CDATA[testAuthenticateDriver_Failed
+]]></system-out>
   </testcase>
 </testsuite>

@@ -8,10 +8,8 @@ import java.util.logging.Logger;
 
 public class DriverDB {
     private static final Logger logger = Logger.getLogger(DriverDB.class.getName());
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/megacitycab?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASS = "Admin";
-    static final String INSERT_QUERY = "INSERT INTO drivers (Name, NIC, LicenseNumber, LicenseExpiryDate, PhoneNumber, Address, Email, DateOfBirth, Gender, Availability, YearsOfExperience, Rating, LastTripDate, EmergencyContact, Salary, AssignedCarID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+    static final String INSERT_QUERY = "INSERT INTO drivers (Name, NIC, LicenseNumber, LicenseExpiryDate, PhoneNumber, Address, Email, DateOfBirth, Gender, Availability, YearsOfExperience, Rating, LastTripDate, EmergencyContact, Salary, AssignedCarID, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Singleton instance of DriverDB
     private static DriverDB instance;
@@ -30,17 +28,27 @@ public class DriverDB {
         }
         return instance;
     }
-
-    // Use a connection pool in production instead of creating a new connection every time
-    private static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, USER, PASS);
+     public Driver getDriverByCarId(int carID) {
+        String query = "SELECT * FROM drivers WHERE AssignedCarID = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, carID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToDriver(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error fetching driver by car ID: " + carID, e);
+        }
+        return null;
     }
 
     public List<Driver> getAllDrivers() {
         List<Driver> drivers = new ArrayList<>();
         String query = "SELECT * FROM megacitycab.drivers";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = dbConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -56,7 +64,7 @@ public class DriverDB {
 
     public Driver getDriverById(int driverID) {
         String query = "SELECT * FROM drivers WHERE DriverID = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, driverID);
@@ -77,7 +85,7 @@ public class DriverDB {
             return false;
         }
 
-        try (Connection conn = getConnection();
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(INSERT_QUERY)) {
 
             setDriverParams(pstmt, driver, false);
@@ -99,9 +107,9 @@ public class DriverDB {
         String query = "UPDATE drivers SET Name = ?, NIC = ?, LicenseNumber = ?, "
                 + "LicenseExpiryDate = ?, PhoneNumber = ?, Address = ?, Email = ?, DateOfBirth = ?, Gender = ?, "
                 + "Availability = ?, YearsOfExperience = ?, Rating = ?, LastTripDate = ?, EmergencyContact = ?,"
-                + " Salary = ?, AssignedCarID = ? WHERE DriverID = ?";
+                + " Salary = ?, AssignedCarID = ?, Username = ?, Password = ? WHERE DriverID = ?";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             // Set parameters for the PreparedStatement
@@ -124,7 +132,7 @@ public class DriverDB {
 
     public boolean deleteDriver(int driverID) {
         String query = "DELETE FROM drivers WHERE DriverID = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, driverID);
@@ -154,17 +162,26 @@ public class DriverDB {
                 rs.getString("Email"),
                 rs.getDate("DateOfBirth") != null ? rs.getDate("DateOfBirth").toLocalDate() : null,
                 rs.getString("Gender") != null ? Driver.Gender.valueOf(rs.getString("Gender")) : null,
-                rs.getInt("AssignedCarID"),
                 rs.getBoolean("Availability"),
                 rs.getInt("YearsOfExperience"),
                 rs.getDouble("Rating"),
                 rs.getDate("LastTripDate") != null ? rs.getDate("LastTripDate").toLocalDate() : null,
                 rs.getString("EmergencyContact"),
-                rs.getDouble("Salary")
+                rs.getDouble("Salary"),
+                rs.getInt("AssignedCarID"),
+                rs.getString("Username"),
+                rs.getString("Password")
         );
     }
 
     private void setDriverParams(PreparedStatement pstmt, Driver driver, boolean includeId) throws SQLException {
+        // Check for null or empty values in username and password
+        if (driver.getUsername() == null || driver.getUsername().trim().isEmpty() ||
+            driver.getPassword() == null || driver.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username and password cannot be null or empty.");
+        }
+
+        // Set parameters for the PreparedStatement
         pstmt.setString(1, driver.getName());
         pstmt.setString(2, driver.getNic());
         pstmt.setString(3, driver.getLicenseNumber());
@@ -181,9 +198,53 @@ public class DriverDB {
         pstmt.setString(14, driver.getEmergencyContact());
         pstmt.setDouble(15, driver.getSalary());
         pstmt.setInt(16, driver.getAssignedCarID());
+        pstmt.setString(17, driver.getUsername());
+        pstmt.setString(18, driver.getPassword());
 
+        // If ID should be included, assign it at index 19
         if (includeId) {
-            pstmt.setInt(17, driver.getDriverID());
+            pstmt.setInt(19, driver.getDriverID());
         }
     }
+    public Driver authenticateDriver(String username, String password) {
+    Driver driver = null;
+    String sql = "SELECT * FROM drivers WHERE Username = ? AND Password = ?";
+    
+    try (Connection conn = dbConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+         
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            driver = new Driver();
+            driver.setDriverID(rs.getInt("DriverID"));
+            driver.setUsername(rs.getString("Username"));
+            driver.setPassword(rs.getString("Password"));
+            driver.setName(rs.getString("Name"));
+            driver.setNic(rs.getString("NIC"));
+            driver.setLicenseNumber(rs.getString("LicenseNumber"));
+            driver.setLicenseExpiryDate(rs.getDate("LicenseExpiryDate") != null ? rs.getDate("LicenseExpiryDate").toLocalDate() : null);
+            driver.setPhoneNumber(rs.getString("PhoneNumber"));
+            driver.setAddress(rs.getString("Address"));
+            driver.setEmail(rs.getString("Email"));
+            driver.setDateOfBirth(rs.getDate("DateOfBirth") != null ? rs.getDate("DateOfBirth").toLocalDate() : null);
+            driver.setGender(rs.getString("Gender") != null ? Driver.Gender.valueOf(rs.getString("Gender")) : null);
+            driver.setAssignedCarID(rs.getInt("AssignedCarID"));
+            driver.setAvailability(rs.getBoolean("Availability"));
+            driver.setYearsOfExperience(rs.getInt("YearsOfExperience"));
+            driver.setRating(rs.getDouble("Rating"));
+            driver.setLastTripDate(rs.getDate("LastTripDate") != null ? rs.getDate("LastTripDate").toLocalDate() : null);
+            driver.setEmergencyContact(rs.getString("EmergencyContact"));
+            driver.setSalary(rs.getDouble("Salary"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return driver;
+}
+
 }

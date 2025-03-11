@@ -26,9 +26,15 @@ public class Driver {
     private LocalDate lastTripDate;
     private String emergencyContact;
     private double salary;
+    private String username;
+    private String password;
 
     public void setdriverID(int driverID) {
        this.driverID = driverID;
+    }
+
+    String getSalt() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -54,8 +60,8 @@ public class Driver {
      */
     public Driver(int driverID, String name, String nic, String licenseNumber, LocalDate licenseExpiryDate,
                   String phoneNumber, String address, String email, LocalDate dateOfBirth, Gender gender,
-                  int assignedCarID, boolean availability, int yearsOfExperience, double rating,
-                  LocalDate lastTripDate, String emergencyContact, double salary) {
+                  boolean availability, int yearsOfExperience, double rating,
+                  LocalDate lastTripDate, String emergencyContact, double salary,int assignedCarID, String username, String password) {
         this.driverID = driverID;
         this.setName(name);
         this.setNic(nic);
@@ -73,6 +79,8 @@ public class Driver {
         this.lastTripDate = lastTripDate;
         this.setEmergencyContact(emergencyContact);
         this.setSalary(salary);
+        this.username = username;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -247,6 +255,22 @@ public class Driver {
         }
         this.salary = salary;
     }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     /**
      * Returns a string representation of the driver object.
@@ -260,6 +284,6 @@ public class Driver {
                 + ", gender=" + (gender != null ? gender : "null") + ", assignedCarID=" + assignedCarID
                 + ", availability=" + availability + ", yearsOfExperience=" + yearsOfExperience
                 + ", rating=" + rating + ", lastTripDate=" + (lastTripDate != null ? lastTripDate : "null")
-                + ", emergencyContact=" + emergencyContact + ", salary=" + salary + "]";
+                + ", emergencyContact=" + emergencyContact + ", salary=" + salary + ", username=" + username + ", password=" + password + "]";
     }
 }

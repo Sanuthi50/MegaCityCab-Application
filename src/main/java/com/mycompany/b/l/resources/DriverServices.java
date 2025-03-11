@@ -6,12 +6,15 @@ import com.mycompany.b.l.db.GsonUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mycompany.b.l.db.Customer;
+import com.mycompany.b.l.db.CustomerDAO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
 
 @Path("drivers")
 public class DriverServices {
@@ -92,12 +95,15 @@ public class DriverServices {
         }
     }
 
-    @PUT
+   @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateDriver(@PathParam("id") int driverID, String json) {
         try {
+            logger.info("Received JSON: " + json);
+            logger.info("Path ID: " + driverID);
+
             Driver driver = gson.fromJson(json, Driver.class);
             if (driver.getDriverID() != driverID) {
                 return Response.status(Response.Status.BAD_REQUEST)
@@ -131,5 +137,43 @@ public class DriverServices {
                     .entity("{\"error\": \"Internal server error\"}")
                     .build();
         }
+    }
+     @POST
+    @Path("login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(Driver driver) {
+        DriverDB driverDAO = new DriverDB();
+        Driver authenticatedDriver = driverDAO.authenticateDriver(driver.getUsername(), driver.getPassword());
+
+        if (authenticatedDriver != null) {
+            javax.json.JsonObject jsonResponse = Json.createObjectBuilder()
+                .add("id", authenticatedDriver.getDriverID()) 
+                .add("message", "Login successful")
+                .build();
+
+            return Response.ok(jsonResponse)
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
+        } else {
+            javax.json.JsonObject errorResponse = Json.createObjectBuilder()
+                .add("error", "Invalid username or password")
+                .build();
+
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(errorResponse)
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
+        }
+    }
+
+    @OPTIONS
+    @Path("login")
+    public Response preflight() {
+        return Response.ok()
+            .header("Access-Control-Allow-Origin", "*")
+            .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            .header("Access-Control-Allow-Headers", "Content-Type")
+            .build();
     }
 }
