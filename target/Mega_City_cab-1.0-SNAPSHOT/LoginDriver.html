@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 223, 0, 0.8);
+            width: 300px;
+            text-align: center;
+        }
+        h2 {
+            color: #FFD700;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #ccc;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+        button {
+            background-color: #FFD700;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #ffcc00;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script> 
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Driver Login</h2>
+            <form id="loginForm">
+                <label for="loginUsername" aria-label="Username">Username:</label>
+                <input type="text" id="loginUsername" name="loginUsername" required aria-describedby="usernameHelp">
+                <span id="usernameHelp" class="sr-only">Enter your username</span>
+                
+                <label for="loginPassword" aria-label="Password">Password:</label>
+                <input type="password" id="loginPassword" name="loginPassword" required aria-describedby="passwordHelp">
+                <span id="passwordHelp" class="sr-only">Enter your password</span>
+                
+                <button type="submit" id="loginButton">Login</button>
+                <p id="errorMsg" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            const loginButton = document.getElementById("loginButton");
+            const errorMsg = document.getElementById("errorMsg");
+
+            const API_URL = "http://localhost:8080/B.L/api/drivers/login";
+
+            loginForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const username = document.getElementById("loginUsername").value;
+                const password = document.getElementById("loginPassword").value;
+                errorMsg.textContent = "";
+
+                try {
+                    // Show loading state
+                    loginButton.disabled = true;
+                    loginButton.textContent = "Logging in...";
+
+                    console.log("Sending request to:", API_URL);
+                    console.log("Request payload:", { username, password });
+
+                    // Send login request to the backend
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username, password }),
+                    });
+
+                    console.log("Response status:", response.status);
+                    console.log("Response headers:", response.headers);
+
+                    if (!response.ok) {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || "Invalid username or password");
+                        } else {
+                            throw new Error("An error occurred. Please try again.");
+                        }
+                    }
+
+                    const data = await response.json();
+                    console.log("Response data:", data);
+
+                    if (!data.id) {
+                        throw new Error("No ID found in the response");
+                    }
+
+                    // Redirect to index.html with the ID as a query parameter
+                    window.location.href = `MainDriver.html?id=${data.id}`;
+                } catch (error) {
+                    console.error("Error:", error);
+                    errorMsg.textContent = error.message;
+                } finally {
+                    // Reset button state
+                    loginButton.disabled = false;
+                    loginButton.textContent = "Login";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

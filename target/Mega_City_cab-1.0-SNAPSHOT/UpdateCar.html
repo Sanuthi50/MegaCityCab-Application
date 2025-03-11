@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Car Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-container {
+            background: #333;
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #444;
+            color: white;
+        }
+        input::placeholder {
+            color: #bbb;
+        }
+        button {
+            background-color: #f3c500;
+            color: black;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #f2b600;
+        }
+        .error-message, .success-message {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .error-message {
+            color: red;
+        }
+        .success-message {
+            color: green;
+        }
+        .loading-spinner {
+            display: none;
+            margin-top: 10px;
+        }
+        .image-preview {
+            margin-top: 10px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Update Car Information</h1>
+    <div class="form-container">
+        <div class="form-group">
+            <label for="carLicensePlate">License Plate</label>
+            <input type="text" id="carLicensePlate" placeholder="Enter License Plate" required>
+        </div>
+        <div class="form-group">
+            <label for="carModel">Model</label>
+            <input type="text" id="carModel" placeholder="Enter Model" required>
+        </div>
+        <div class="form-group">
+            <label for="carMake">Make</label>
+            <input type="text" id="carMake" placeholder="Enter Make" required>
+        </div>
+        <div class="form-group">
+            <label for="carYear">Year</label>
+            <input type="number" id="carYear" placeholder="Enter Year" min="1990" required>
+        </div>
+        <div class="form-group">
+            <label for="carCapacity">Capacity</label>
+            <input type="number" id="carCapacity" placeholder="Enter Capacity" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="carFuelType">Fuel Type</label>
+            <select id="carFuelType" required>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="carAvailability">Availability</label>
+            <select id="carAvailability" required>
+                <option value="1">Available</option>
+                <option value="0">Not Available</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="lastServiceDate">Last Service Date</label>
+            <input type="date" id="lastServiceDate">
+        </div>
+        <div class="form-group">
+            <label for="insuranceExpiryDate">Insurance Expiry Date</label>
+            <input type="date" id="insuranceExpiryDate" required>
+        </div>
+        <div class="form-group">
+            <label for="mileage">Mileage</label>
+            <input type="number" id="mileage" placeholder="Enter Mileage" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="carStatus">Status</label>
+            <select id="carStatus" required>
+                <option value="Available">Available</option>
+                <option value="On Trip">On Trip</option>
+                <option value="Under Maintenance">Under Maintenance</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="driverID">Driver ID</label>
+            <input type="number" id="driverID" placeholder="Enter Driver ID">
+        </div>
+        <div class="form-group">
+            <label for="carImage">Car Image</label>
+            <input type="file" id="carImage" accept="image/*" onchange="previewImage()">
+            <div class="image-preview">
+                <img id="carImagePreview" src="" alt="Car Image Preview" style="display: none;">
+            </div>
+        </div>
+        <button id="updateButton" onclick="validateAndUpdateCar()">Update Car</button>
+        <button onclick="goBack()">Cancel</button>
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        <div id="loadingSpinner" class="loading-spinner">Loading...</div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:8080/B.L/api/cars';
+        const urlParams = new URLSearchParams(window.location.search);
+        const carID = urlParams.get("id");
+
+        // Fetch car data when the page loads
+        async function fetchCarData() {
+            try {
+                const response = await fetch(`${apiUrl}/${carID}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch car details.");
+                }
+                const car = await response.json();
+
+                // Populate form fields
+                document.getElementById("carLicensePlate").value = car.licensePlate || "";
+                document.getElementById("carModel").value = car.model || "";
+                document.getElementById("carMake").value = car.make || "";
+                document.getElementById("carYear").value = car.year || "";
+                document.getElementById("carCapacity").value = car.capacity || "";
+                document.getElementById("carFuelType").value = car.fuelType || "Petrol";
+                document.getElementById("carAvailability").value = car.availability ? "1" : "0";
+
+                // Format dates properly
+                if (car.lastServiceDate) {
+                    const lastServiceDate = new Date(car.lastServiceDate).toISOString().split('T')[0];
+                    document.getElementById("lastServiceDate").value = lastServiceDate;
+                }
+                if (car.insuranceExpiryDate) {
+                    const insuranceExpiryDate = new Date(car.insuranceExpiryDate).toISOString().split('T')[0];
+                    document.getElementById("insuranceExpiryDate").value = insuranceExpiryDate;
+                }
+
+                document.getElementById("mileage").value = car.mileage || "0.00";
+                document.getElementById("carStatus").value = car.status || "Available";
+                document.getElementById("driverID").value = car.driverID || "";
+
+                // Display car image if available
+                if (car.imagePath) {
+                    document.getElementById("carImagePreview").src = car.imagePath;
+                    document.getElementById("carImagePreview").style.display = "block";
+                }
+            } catch (error) {
+                document.getElementById("errorMessage").textContent = "Error loading car data.";
+                console.error("Error fetching car data:", error);
+            }
+        }
+        // Preview the selected image
+        function previewImage() {
+            const file = document.getElementById("carImage").files[0];
+            const preview = document.getElementById("carImagePreview");
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+                preview.style.display = "none";
+            }
+        }
+
+        // Validate form inputs
+        function validateForm() {
+            const licensePlate = document.getElementById("carLicensePlate").value;
+            const model = document.getElementById("carModel").value;
+            const make = document.getElementById("carMake").value;
+            const year = document.getElementById("carYear").value;
+            const capacity = document.getElementById("carCapacity").value;
+            const insuranceExpiryDate = document.getElementById("insuranceExpiryDate").value;
+
+            if (!licensePlate || !model || !make || !year || !capacity || !insuranceExpiryDate) {
+                document.getElementById("errorMessage").textContent = "Please fill out all required fields.";
+                return false;
+            }
+
+            if (isNaN(year) || year < 1990) {
+                document.getElementById("errorMessage").textContent = "Please enter a valid year (1990 or later).";
+                return false;
+            }
+
+            if (isNaN(capacity) || capacity < 1) {
+                document.getElementById("errorMessage").textContent = "Please enter a valid capacity (1 or more).";
+                return false;
+            }
+
+            return true;
+        }
+
+        // Update car data
+        async function updateCar() {
+            const carData = {
+                licensePlate: document.getElementById("carLicensePlate").value,
+                model: document.getElementById("carModel").value,
+                make: document.getElementById("carMake").value,
+                year: parseInt(document.getElementById("carYear").value),
+                capacity: parseInt(document.getElementById("carCapacity").value),
+                fuelType: document.getElementById("carFuelType").value,
+                availability: document.getElementById("carAvailability").value === "1",
+                lastServiceDate: document.getElementById("lastServiceDate").value,
+                insuranceExpiryDate: document.getElementById("insuranceExpiryDate").value,
+                mileage: parseFloat(document.getElementById("mileage").value),
+                status: document.getElementById("carStatus").value,
+            };
+
+            // Handle driver ID
+            const driverID = document.getElementById("driverID").value;
+            if (driverID && !isNaN(driverID)) {
+                carData.driverID = parseInt(driverID);
+            } else {
+                carData.driverID = null;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/${carID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(carData),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to update car: ${response.statusText}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error updating car:", error);
+                throw error;
+            }
+        }
+
+        // Handle image upload
+        async function uploadCarImage(carID, imageFile) {
+            const formData = new FormData();
+            formData.append("image", imageFile);
+
+            const response = await fetch(`${apiUrl}/${carID}/upload-image`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            return await response.json();
+        }
+
+        // Validate and update car
+        async function validateAndUpdateCar() {
+            if (!validateForm()) return;
+
+            document.getElementById("updateButton").disabled = true;
+            document.getElementById("loadingSpinner").style.display = "block";
+            document.getElementById("errorMessage").textContent = "";
+            document.getElementById("successMessage").textContent = "";
+
+            try {
+                // Update car information
+                await updateCar();
+
+                // Handle image upload if an image file is selected
+                const carImage = document.getElementById("carImage").files[0];
+                if (carImage) {
+                    if (carImage.size > 5 * 1024 * 1024) { // 5MB limit
+                        throw new Error("Image size must be less than 5MB.");
+                    }
+                    await uploadCarImage(carID, carImage);
+                }
+
+                // Show success message
+                document.getElementById("successMessage").textContent = "Car information updated successfully!";
+
+                // Redirect after a short delay
+                setTimeout(() => window.location.href = "ViewCars.html", 2000);
+            } catch (error) {
+                document.getElementById("errorMessage").textContent = `Failed to update car: ${error.message}`;
+                console.error("Error updating car:", error);
+            } finally {
+                document.getElementById("updateButton").disabled = false;
+                document.getElementById("loadingSpinner").style.display = "none";
+            }
+        }
+
+        // Go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Fetch car data when the page loads
+        fetchCarData();
+    </script>
+</body>
+</html>

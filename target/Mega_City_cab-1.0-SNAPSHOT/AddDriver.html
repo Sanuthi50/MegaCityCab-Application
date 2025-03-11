@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Registration</title>
+    <style>
+       
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .form-container button {
+            background-color: #f3c500;
+            color: black;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+          
+        }
+        .form-container button:hover {
+            background-color: #f2b600;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+           body {
+            font-family: Arial, sans-serif;
+            background-color:black;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color:#f3c500;
+        }
+        .form-container {
+            background: #333;
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 50%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+       
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #444;
+            color: white;
+        }
+        input::placeholder {
+            color: #bbb;
+        }
+        
+       
+    </style>
+</head>
+<body>
+    <h1 id="formTitle">Driver Registration</h1>
+    <div class="form-container">
+        <input type="hidden" id="driverID">
+        
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter Name" required>
+        <label for="username">UserName</label>
+        <input type="text" id="username" placeholder="Enter UserName" required>
+        <label for="password">Password</label>
+        <input type="text" id="password" placeholder="Enter Password" required>
+        
+        <label for="nic">NIC</label>
+        <input type="text" id="nic" placeholder="Enter NIC" required>
+        
+        <label for="licenseNumber">License Number</label>
+        <input type="text" id="licenseNumber" placeholder="Enter License Number" required>
+        
+        <label for="licenseExpiryDate">License Expiry Date (YYYY-MM-DD)</label>
+        <input type="text" id="licenseExpiryDate" placeholder="YYYY-MM-DD" required>
+        
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" placeholder="Enter Phone Number" required>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter Email">
+        
+        <label for="dateOfBirth">Date of Birth (YYYY-MM-DD)</label>
+        <input type="text" id="dateOfBirth" placeholder="YYYY-MM-DD" required>
+        
+        <label for="gender">Gender</label>
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Enter Address" required>
+        
+        <label for="emergencyContact">Emergency Contact</label>
+        <input type="text" id="emergencyContact" placeholder="Enter Emergency Contact" required>
+        
+        <label for="yearsOfExperience">Years of Experience</label>
+        <input type="number" id="yearsOfExperience" placeholder="Enter Years of Experience" min="0">
+        
+        <label for="rating">Rating (0-5)</label>
+        <input type="number" id="rating" placeholder="Enter Rating (0-5)" step="0.01" min="0" max="5">
+        
+        <label for="lastTripDate">Last Trip Date (YYYY-MM-DD)</label>
+        <input type="text" id="lastTripDate" placeholder="YYYY-MM-DD">
+        
+        <label for="salary">Salary</label>
+        <input type="number" id="salary" placeholder="Enter Salary" step="0.01" min="0">
+        
+        <label for="assignedCarID">Assigned Car ID</label>
+        <input type="number" id="assignedCarID" placeholder="Enter Assigned Car ID">
+        
+        <label for="availability">Availability</label>
+        <select id="availability">
+            <option value="true">Available</option>
+            <option value="false">Not Available</option>
+        </select>
+
+        <button onclick="submitDriver()">Save Driver</button>
+         <button onclick="goBack()">Cancel</button>
+        <p class="error" id="errorMessage"></p>
+        <p class="success" id="successMessage"></p>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:8080/B.L/resources/drivers';
+        const urlParams = new URLSearchParams(window.location.search);
+        const driverId = urlParams.get('id');
+
+        if (driverId) {
+            document.getElementById('formTitle').textContent = 'Edit Driver';
+            fetchDriverDetails(driverId);
+        }
+
+        async function fetchDriverDetails(id) {
+            try {
+                const response = await fetch(`${apiUrl}/${id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch driver details.');
+                }
+                const driver = await response.json();
+                Object.keys(driver).forEach(key => {
+                    if (document.getElementById(key)) {
+                        document.getElementById(key).value = driver[key] || '';
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching driver details:', error);
+                document.getElementById('errorMessage').textContent = 'Error: Unable to load driver details. Please refresh and try again.';
+            }
+        }
+
+        function validateInputs(driver) {
+            let errors = [];
+
+            if (!driver.name.trim()) errors.push('Name is required.');
+            if (!driver.nic.trim()) errors.push('NIC is required.');
+            if (!driver.licenseNumber.trim()) errors.push('License Number is required.');
+            if (!driver.licenseExpiryDate.trim()) errors.push('License Expiry Date is required.');
+            if (!driver.phoneNumber.trim()) errors.push('Phone Number is required.');
+            if (!driver.email.trim()) errors.push('Email is required.');
+            if (!driver.dateOfBirth.trim()) errors.push('Date of Birth is required.');
+            if (!driver.address.trim()) errors.push('Address is required.');
+            if (!driver.emergencyContact.trim()) errors.push('Emergency Contact is required.');
+            if (driver.rating < 0 || driver.rating > 5) errors.push('Rating must be between 0 and 5.');
+            if (driver.yearsOfExperience < 0) errors.push('Years of Experience cannot be negative.');
+            if (driver.salary < 0) errors.push('Salary cannot be negative.');
+
+            return errors;
+        }
+
+        async function submitDriver() {
+            document.getElementById('errorMessage').textContent = "";
+            document.getElementById('successMessage').textContent = "";
+
+            const driver = {
+                name: document.getElementById('name').value.trim(),
+                nic: document.getElementById('nic').value.trim(),
+                licenseNumber: document.getElementById('licenseNumber').value.trim(),
+                licenseExpiryDate: formatDate(document.getElementById('licenseExpiryDate').value.trim()),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                dateOfBirth: formatDate(document.getElementById('dateOfBirth').value.trim()),
+                gender: document.getElementById('gender').value.trim(),
+                assignedCarID: document.getElementById('assignedCarID').value.trim(),
+                availability: document.getElementById('availability').value === 'true',
+                yearsOfExperience: Number(document.getElementById('yearsOfExperience').value.trim()) || 0,
+                rating: Number(document.getElementById('rating').value.trim()) || 0,
+                lastTripDate: formatDate(document.getElementById('lastTripDate').value.trim()),
+                emergencyContact: document.getElementById('emergencyContact').value.trim(),
+                salary: Number(document.getElementById('salary').value.trim()) || 0,
+                username: document.getElementById('username').value.trim(),
+                password: document.getElementById('password').value.trim()
+            };
+
+            let errors = validateInputs(driver);
+            if (errors.length > 0) {
+                document.getElementById('errorMessage').textContent = errors.join(' ');
+                return;
+            }
+
+            const method = driverId ? 'PUT' : 'POST';
+            const url = driverId ? `${apiUrl}/${driverId}` : apiUrl;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(driver)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save driver. Please try again.');
+                }
+
+                document.getElementById('successMessage').textContent = driverId ? 'Driver updated successfully!' : 'Driver added successfully!';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent = error.message;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            if (isNaN(date)) return ''; 
+            return date.toISOString().split('T')[0];
+        }
+         function goBack() {
+            window.location.href = "ViewDrivers.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-container {
+            background: #333;
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: black;
+            background-color: gray;
+        }
+
+        button {
+            background-color: #f3c500;
+            color: black;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #f2b600;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+            
+            <label for="nic">NIC:</label>
+            <input type="text" id="nic" name="nic" required>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            
+            <button type="submit">Register</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:8080/B.L/api/customers'; // Replace with your actual API URL
+
+        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Clear previous messages
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').className = 'message';
+
+            // Gather form data
+            const customer = {
+                username: document.getElementById('username').value.trim(),
+                passwordHash: document.getElementById('password').value.trim(), // Assuming you hash this on the backend
+                name: document.getElementById('name').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                nic: document.getElementById('nic').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                email: document.getElementById('email').value.trim()
+            };
+
+            // Validate inputs
+            if (!customer.username || !customer.passwordHash || !customer.name || !customer.address || !customer.nic || !customer.phoneNumber) {
+                showMessage('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(customer)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to register! Please try again.');
+                }
+
+                showMessage('Customer registered successfully! Redirecting to login...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'Login.html'; // Redirect to login page
+                }, 2000);
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage(error.message || 'An error occurred. Please try again.', 'error');
+            }
+        });
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+        }
+    </script>
+</body>
+</html>
