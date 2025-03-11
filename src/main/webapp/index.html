@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega City Cab</title>
+    
+    <style>
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #222;
+            color: #fff;
+            text-align: left;
+        }
+        .styled-table th, .styled-table td {
+            padding: 10px;
+            border: 1px solid #fff;
+        }
+        .styled-table th {
+            background: #333;
+        }
+        .status-pending { color: yellow; }
+        .status-completed { color: green; }
+        .status-confirmed { color: blue; }
+        .status-cancelled { color: red; }
+        #pagination button {
+            margin: 5px;
+            padding: 5px 10px;
+            border: none;
+            background: #444;
+            color: white;
+            cursor: pointer;
+        }
+        #pagination button.active {
+            background: #fff;
+            color: #000;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('Img/bg5.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(128, 128, 128, 0.5);
+            z-index: -1;
+        }
+        header {
+            background-color: black;
+            color: yellow;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .profile {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            background: black;
+            padding: 5px;
+            border-radius: 50px;
+        }
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid yellow;
+            background: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px 0;
+        }
+        nav a {
+            color: yellow;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+        }
+        nav a:hover {
+            background-color: #666;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .welcome-section {
+            background: rgba(50, 50, 50, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            max-width: 600px;
+        }
+        .booking-form {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 2px solid yellow;
+            background: #222;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: yellow;
+            color: black;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .button:hover {
+            background-color: #ccc;
+        }
+        footer {
+            background-color: #000;
+            color: yellow;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        
+        .logout-button {
+            background-color: yellow;
+            color: black;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+          
+        }
+
+        .logout-button:hover {
+            background-color: #ccc;
+        }
+        #manage {
+            margin-top: 40px;
+        }
+
+        #bookingDetails {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        #bookingDetails table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #bookingDetails th,
+        #bookingDetails td {
+            border: 1px solid yellow;
+            padding: 12px;
+            text-align: center;
+        }
+
+        #bookingDetails th {
+            background-color: #333;
+            color: yellow;
+            font-weight: bold;
+        }
+
+        #bookingDetails tr:hover {
+            background-color: rgba(255, 255, 0, 0.1);
+        }
+
+        .no-bookings {
+            font-size: 18px;
+            color: yellow;
+            margin-top: 20px;
+        }
+
+        .booking-confirmation {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .booking-confirmation h3 {
+            color: yellow;
+            margin-bottom: 15px;
+        }
+
+        .booking-confirmation p {
+            margin: 10px 0;
+        }
+
+        .booking-confirmation button {
+            background-color: yellow;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .booking-confirmation button:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+     
+    <header>
+        Mega City Cab
+        <div class="profile">
+            <img id="profilePic" src="Img/user.png" alt="Profile Picture">
+            <span id="username">Guest</span>
+        </div>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#book">Book a Ride</a>
+        <a href="#manage">Manage Bookings</a>
+        <a href="Help.html">Help</a>
+        <button onclick="logout()" class="logout-button">Logout</button>
+    </nav>
+    <div class="container">
+        <section id="home">
+            <div class="welcome-section">
+                <h2>Welcome to Mega City Cab</h2>
+                <p>Enjoy your comfortable trip with Mega City Cab.
+                    Mega City Cab is your reliable transportation partner, offering safe, affordable, and convenient rides across the city. 
+                    Whether you're commuting to work, heading to an event, or need a quick ride, our professional drivers and well-maintained fleet ensure a smooth journey. 
+                   Book your ride now and experience top-notch service with just a few clicks!
+                </p>
+            </div>
+        </section>
+ <section id="book">
+    <h2>Book a Ride</h2>
+    <div class="booking-form">
+        <form id="bookingForm">
+            <!-- Hidden field for CustomerID -->
+            <input type="hidden" id="customerId" name="customerId">
+
+            <div class="form-group">
+                <label for="pickupLocation">Pickup Location</label>
+                <input type="text" id="pickupLocation" name="pickupLocation" required>
+            </div>
+            <div class="form-group">
+                <label for="dropLocation">Drop Location</label>
+                <input type="text" id="dropLocation" name="dropLocation" required>
+            </div>
+            <div class="form-group">
+                <label for="distance">Distance (in km)</label>
+                <input type="number" id="distance" name="distance" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="car">Select Car</label>
+                <select id="car" name="car" required>
+                    <option value="">Loading cars...</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Book Now</button>
+        </form>
+    </div>
+    <section id="manage">
+        <h2>Manage Bookings</h2>
+        <div id="bookingDetails">
+            <!-- Booking details will be dynamically inserted here -->
+        </div>
+        <div class="booking-confirmation" id="bookingConfirmation">
+            <h3>Booking Summary</h3>
+            <p><strong>Price:</strong> $<span id="confirmationPrice">0.00</span></p>
+            <p><strong>Discount:</strong> $<span id="confirmationDiscount">0.00</span></p>
+            <p><strong>Tax:</strong> $<span id="confirmationTax">0.00</span></p>
+            <p><strong>Total:</strong> $<span id="confirmationTotal">0.00</span></p>
+            <button onclick="confirmBooking()">Confirm Booking</button>
+            <button onclick="cancelBooking()">Cancel</button>
+        </div>
+    </section>
+    <input type="text" id="searchBooking" placeholder="Search Booking ID">
+            <select id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+            <div id="bookingDetails"></div>
+            <div id="pagination"></div>
+
+       
+    </div>
+    <footer>
+        <p>&copy; 2025 Mega City Cab. All rights reserved.</p>
+    </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the CustomerID from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerId = urlParams.get('id');
+
+        if (!customerId) {
+            alert("Customer not found. Please log in again.");
+            window.location.href = "Login.html"; // Redirect if no ID is found
+            return;
+        }
+
+        // Set customerId in input field
+        const customerInput = document.getElementById("customerId");
+        if (customerInput) customerInput.value = customerId;
+
+        // Fetch user data and display name
+        fetch(`http://localhost:8080/B.L/api/customers/${customerId}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch user data");
+                return response.json();
+            })
+            .then(customer => {
+                document.getElementById('username').innerText = customer.name;
+               document.getElementById('profilePic').src = "Img/user.png";
+                 // Static profile pic
+                fetchAvailableCars();
+                displayBookingDetails(customerId);
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error);
+                alert("Error fetching user data. Please try again.");
+                window.location.href = "Login.html";
+            });
+
+        // Fetch available cars and populate the dropdown
+        function fetchAvailableCars() {
+            fetch('http://localhost:8080/B.L/api/cars')
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to fetch cars");
+                    return response.json();
+                })
+                .then(data => {
+                    const dropdown = document.getElementById('car');
+                    if (!dropdown) return;
+
+                    dropdown.innerHTML = '<option value="">Select a car</option>'; // Reset options
+
+                    data.forEach(car => {
+                        const option = document.createElement('option');
+                        option.value = car.carID;
+                        option.textContent = `${car.model} (${car.licensePlate}) - $${car.price}/km`;
+                        dropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching available cars:", error);
+                    alert("Failed to load cars. Please try again later.");
+                });
+        }
+
+        // Handle form submission for booking
+        const bookingForm = document.getElementById('bookingForm');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const pickupLocation = document.getElementById('pickupLocation')?.value.trim();
+                const dropLocation = document.getElementById('dropLocation')?.value.trim();
+                const distance = parseFloat(document.getElementById('distance')?.value);
+                const carId = document.getElementById('car')?.value;
+
+                // Validate form fields
+                if (!customerId || !pickupLocation || !dropLocation || isNaN(distance) || !carId) {
+                    alert("Please fill in all fields correctly before submitting the booking.");
+                    return;
+                }
+
+                // Fetch car details to calculate price, discount, and tax
+                fetch(`http://localhost:8080/B.L/api/cars/${carId}`)
+                    .then(response => {
+                        if (!response.ok) return response.text().then(text => { throw new Error(text); });
+                        return response.json();
+                    })
+                    .then(car => {
+                        if (!car.driverID || car.driverID === 0) {
+                            throw new Error("No driver assigned to this car. Please contact support.");
+                        }
+
+                        const price = (car.price * distance).toFixed(2);
+                        const discount = (car.discount * distance).toFixed(2);
+                        const tax = (car.tax * distance).toFixed(2);
+
+                        const bookingData = {
+                            customerID: parseInt(customerId),
+                            pickupLocation,
+                            dropLocation,
+                            price: parseFloat(price),
+                            discount: parseFloat(discount),
+                            tax: parseFloat(tax),
+                            bookingDate: new Date().toISOString(),
+                            status: "Pending",
+                            carID: parseInt(carId),
+                            driverID: car.driverID,
+                            distance:parseFloat(distance) 
+                        };
+
+                        return fetch('http://localhost:8080/B.L/api/bookings', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(bookingData)
+                        });
+                    })
+                    .then(response => {
+                        if (!response.ok) return response.text().then(text => { throw new Error(text); });
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.bookingId) {
+                            alert(`Booking Successful! Booking ID: ${data.bookingId}`);
+                            window.location.reload();
+                        } else {
+                            throw new Error("Booking not created");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error creating booking:", error);
+                        alert(`Failed to create booking. Please try again. Error: ${error.message}`);
+                    });
+            });
+        }
+
+       function displayBookingDetails(userId) {
+    const bookingDetailsContainer = document.getElementById('bookingDetails');
+    const searchInput = document.getElementById('searchBooking');
+    const statusFilter = document.getElementById('statusFilter');
+    const paginationContainer = document.getElementById('pagination');
+    
+    if (!bookingDetailsContainer || !searchInput || !statusFilter || !paginationContainer) return;
+    
+    fetch(`http://localhost:8080/B.L/api/bookings/search/customer/${userId}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to fetch bookings");
+            return response.json();
+        })
+        .then(bookings => {
+            let filteredBookings = bookings;
+            let currentPage = 1;
+            const rowsPerPage = 5;
+
+            function renderTable() {
+                let tableHTML = `
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Pickup Location</th>
+                                <th>Drop Location</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                let start = (currentPage - 1) * rowsPerPage;
+                let end = start + rowsPerPage;
+                let paginatedItems = filteredBookings.slice(start, end);
+
+                paginatedItems.forEach(booking => {
+                    tableHTML += `
+                        <tr>
+                            <td>${booking.bookingId}</td>
+                            <td>${booking.pickupLocation}</td>
+                            <td>${booking.dropLocation}</td>
+                            <td class="status-${booking.status.toLowerCase()}">${booking.status}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `</tbody></table>`;
+                bookingDetailsContainer.innerHTML = tableHTML;
+                renderPagination();
+            }
+
+            function renderPagination() {
+                let totalPages = Math.ceil(filteredBookings.length / rowsPerPage);
+                paginationContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    let button = document.createElement("button");
+                    button.textContent = i;
+                    button.className = currentPage === i ? "active" : "";
+                    button.addEventListener("click", () => {
+                        currentPage = i;
+                        renderTable();
+                    });
+                    paginationContainer.appendChild(button);
+                }
+            }
+
+            searchInput.addEventListener("input", () => {
+                let searchText = searchInput.value.toLowerCase();
+                filteredBookings = bookings.filter(booking =>
+                    booking.bookingId.toString().includes(searchText)
+                );
+                currentPage = 1;
+                renderTable();
+            });
+
+            statusFilter.addEventListener("change", () => {
+                let selectedStatus = statusFilter.value;
+                filteredBookings = selectedStatus ? bookings.filter(b => b.status === selectedStatus) : bookings;
+                currentPage = 1;
+                renderTable();
+            });
+
+            renderTable();
+        })
+        .catch(error => {
+            console.error("Error fetching bookings:", error);
+            bookingDetailsContainer.innerHTML = "<p>No booking found.</p>";
+        });
+}
+
+        // Logout function
+        document.getElementById("logoutBtn")?.addEventListener("click", function () {
+            document.cookie.split(";").forEach(c => {
+                document.cookie = c.trim().split("=")[0] + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            });
+
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = "Login.html";
+        });
+    });
+</script>
+
+</body>
+</html>
