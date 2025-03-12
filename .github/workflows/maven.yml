@@ -31,7 +31,7 @@ jobs:
           cache: maven  # Cache Maven dependencies to speed up builds
 
       # Step 3: Build the project using Maven
-      - name: Build with Maven(skip tests)
+      - name: Build with Maven
         run: mvn -B package --file pom.xml
 
       # Optional: Upload the dependency graph for Dependabot alerts
