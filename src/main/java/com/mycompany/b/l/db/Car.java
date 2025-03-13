@@ -70,38 +70,41 @@ public class Car {
         }
     }
 
-    // Enum for Status
-    public enum Status {
-        AVAILABLE("Available"),
-         NOT_AVAILABLE("Not Available"),
-        ON_TRIP("On Trip"),
-        UNDER_MAINTENANCE("Under Maintenance");
+   public enum Status {
+    AVAILABLE("Available"),
+    NOT_AVAILABLE("Not Available"),
+    ON_TRIP("On Trip"),
+    UNDER_MAINTENANCE("Under Maintenance");
 
-        private final String dbValue;
+    private final String dbValue;
 
-        Status(String dbValue) {
-            this.dbValue = dbValue;
-        }
-
-        public String getDbValue() {
-            return dbValue;
-        }
-
-        public static Status fromDbValue(String value) {
-            if (value == null) {
-                throw new IllegalArgumentException("Input value cannot be null");
-            }
-            String normalizedValue = value.trim(); // Trim extra spaces
-
-            for (Status status : Status.values()) {
-                if (status.dbValue.equalsIgnoreCase(normalizedValue)) {
-                    return status;
-                }
-            }
-            throw new IllegalArgumentException("Unknown status: " + normalizedValue);
-        }
+    Status(String dbValue) {
+        this.dbValue = dbValue;
     }
 
+    public String getDbValue() {
+        return dbValue;
+    }
+
+    @Override
+    public String toString() {
+        return dbValue; // Ensure toString() returns dbValue
+    }
+
+    public static Status fromDbValue(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Input value cannot be null");
+        }
+        String normalizedValue = value.trim(); // Trim extra spaces
+
+        for (Status status : Status.values()) {
+            if (status.dbValue.equalsIgnoreCase(normalizedValue)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Unknown status: " + normalizedValue);
+    }
+}
     // Getters and Setters
     public int getCarID() {
         return carID;

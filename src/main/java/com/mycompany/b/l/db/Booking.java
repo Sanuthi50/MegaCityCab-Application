@@ -23,6 +23,7 @@ public class Booking {
     private Integer carId;
     private Integer driverId;
     private double distance;
+    private Timestamp pickuptime;
 
    
 
@@ -46,7 +47,7 @@ public class Booking {
     // Constructor
     public Booking(int bookingId, int customerId, String pickupLocation, String dropLocation,
                    double price, double discount, double tax, Timestamp bookingDate,
-                   Status status, Integer carId, Integer driverId,double distance) {
+                   Status status, Integer carId, Integer driverId,double distance,Timestamp pickuptime) {
         this.bookingId = bookingId;
         this.customerId = customerId;
         this.pickupLocation = pickupLocation;
@@ -59,6 +60,7 @@ public class Booking {
         this.carId = carId;
         this.driverId = driverId;
         this.distance = distance;
+        this.pickuptime= pickuptime;
     }
     
 
@@ -110,6 +112,14 @@ public class Booking {
     public void setPrice(double price) {
         this.price = price;
     }
+    
+    public Timestamp getPickuptime() {
+        return pickuptime;
+    }
+
+    public void setPickuptime(Timestamp pickuptime) {
+        this.pickuptime = pickuptime;
+    }
 
     public double getDiscount() {
         return discount;
@@ -159,20 +169,22 @@ public class Booking {
         this.driverId = driverId;
     }
 
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "bookingId=" + bookingId +
-                ", customerId=" + customerId +
-                ", pickupLocation='" + pickupLocation + '\'' +
-                ", dropLocation='" + dropLocation + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", tax=" + tax +
-                ", bookingDate=" + bookingDate +
-                ", status=" + status +
-                ", carId=" + carId +
-                ", driverId=" + driverId +
-                '}';
-    }
+   @Override
+public String toString() {
+    return "Booking{" +
+            "bookingId=" + bookingId +
+            ", customerId=" + customerId +
+            ", pickupLocation='" + pickupLocation + '\'' +
+            ", dropLocation='" + dropLocation + '\'' +
+            ", price=" + price +
+            ", discount=" + discount +
+            ", tax=" + tax +
+            ", bookingDate=" + bookingDate +
+            ", status=" + status +
+            ", carId=" + carId +
+            ", driverId=" + driverId +
+            ", pickuptime=" + pickuptime + 
+            '}';
+}
+
 }

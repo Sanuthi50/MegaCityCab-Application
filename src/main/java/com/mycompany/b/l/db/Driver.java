@@ -19,7 +19,7 @@ public class Driver {
     private String email;
     private LocalDate dateOfBirth;
     private Gender gender;
-    private int assignedCarID;
+    private Integer assignedCarID;
     private boolean availability;
     private int yearsOfExperience;
     private double rating;
@@ -61,7 +61,7 @@ public class Driver {
     public Driver(int driverID, String name, String nic, String licenseNumber, LocalDate licenseExpiryDate,
                   String phoneNumber, String address, String email, LocalDate dateOfBirth, Gender gender,
                   boolean availability, int yearsOfExperience, double rating,
-                  LocalDate lastTripDate, String emergencyContact, double salary,int assignedCarID, String username, String password) {
+                  LocalDate lastTripDate, String emergencyContact, double salary,Integer assignedCarID, String username, String password) {
         this.driverID = driverID;
         this.setName(name);
         this.setNic(nic);
@@ -188,11 +188,11 @@ public class Driver {
         this.gender = gender;
     }
 
-    public int getAssignedCarID() {
+    public Integer getAssignedCarID() {
         return assignedCarID;
     }
 
-    public void setAssignedCarID(int assignedCarID) {
+    public void setAssignedCarID(Integer assignedCarID) {
         this.assignedCarID = assignedCarID;
     }
 

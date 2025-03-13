@@ -168,7 +168,7 @@ public class DriverDB {
                 rs.getDate("LastTripDate") != null ? rs.getDate("LastTripDate").toLocalDate() : null,
                 rs.getString("EmergencyContact"),
                 rs.getDouble("Salary"),
-                rs.getInt("AssignedCarID"),
+                rs.getObject("AssignedCarID", Integer.class),
                 rs.getString("Username"),
                 rs.getString("Password")
         );
@@ -197,7 +197,7 @@ public class DriverDB {
         pstmt.setDate(13, driver.getLastTripDate() != null ? Date.valueOf(driver.getLastTripDate()) : null);
         pstmt.setString(14, driver.getEmergencyContact());
         pstmt.setDouble(15, driver.getSalary());
-        pstmt.setInt(16, driver.getAssignedCarID());
+        pstmt.setObject(16, driver.getAssignedCarID());
         pstmt.setString(17, driver.getUsername());
         pstmt.setString(18, driver.getPassword());
 
@@ -232,7 +232,7 @@ public class DriverDB {
             driver.setEmail(rs.getString("Email"));
             driver.setDateOfBirth(rs.getDate("DateOfBirth") != null ? rs.getDate("DateOfBirth").toLocalDate() : null);
             driver.setGender(rs.getString("Gender") != null ? Driver.Gender.valueOf(rs.getString("Gender")) : null);
-            driver.setAssignedCarID(rs.getInt("AssignedCarID"));
+            driver.setAssignedCarID(rs.getObject("AssignedCarID", Integer.class));
             driver.setAvailability(rs.getBoolean("Availability"));
             driver.setYearsOfExperience(rs.getInt("YearsOfExperience"));
             driver.setRating(rs.getDouble("Rating"));
@@ -244,7 +244,26 @@ public class DriverDB {
         e.printStackTrace();
     }
     
-    return driver;
-}
+        return driver;
+    }
 
+    public List<Driver> getDriversByAvailability(boolean availability) {
+        List<Driver> drivers = new ArrayList<>();
+        String query = "SELECT * FROM drivers WHERE Availability = ? AND AssignedCarID IS NULL";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setBoolean(1, availability);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    drivers.add(mapResultSetToDriver(rs));
+                }
+                logger.info("Fetched " + drivers.size() + " drivers with availability: " + availability + " and no assigned car.");
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error fetching drivers by availability: " + e.getMessage(), e);
+        }
+        return drivers;
+    }
 }

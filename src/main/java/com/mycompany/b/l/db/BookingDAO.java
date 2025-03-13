@@ -30,8 +30,8 @@ public class BookingDAO {
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
     // Add a new booking
-    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID,double distance) {
-    String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID,distance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID,double distance,Timestamp pickuptime) {
+    String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID,distance,pickuptime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
     try (Connection conn = dbConnection.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -43,7 +43,8 @@ public class BookingDAO {
         pstmt.setDouble(6, tax);
         pstmt.setTimestamp(7, bookingDate);
         pstmt.setString(8, status.name());
-         pstmt.setDouble(11, distance);// Convert enum to String
+        pstmt.setDouble(11, distance);
+        pstmt.setTimestamp(12, pickuptime);// Convert enum to String
 
         // Handle null values for carID and driverID
         if (carID != null) {
@@ -95,7 +96,8 @@ public class BookingDAO {
                     Status.fromString(rs.getString("Status")), // Convert string to enum
                     rs.getInt("CarID"),
                     rs.getInt("DriverID"),
-                    rs.getDouble("Distance")
+                    rs.getDouble("Distance"),
+                    rs.getTimestamp("PickupTime")
                 );
             }
         } catch (SQLException e) {
@@ -124,10 +126,11 @@ public class BookingDAO {
                     rs.getDouble("Discount"),
                     rs.getDouble("Tax"),
                     rs.getTimestamp("BookingDate"),
-                   Status.fromString(rs.getString("Status")),
+                    Status.fromString(rs.getString("Status")),
                     rs.getInt("CarID"),
                     rs.getInt("DriverID"),
-                        rs.getDouble("Distance")
+                    rs.getDouble("Distance"),
+                    rs.getTimestamp("PickupTime")
                 );
                 bookingList.add(booking);
             }
@@ -139,7 +142,7 @@ public class BookingDAO {
     }
 
     public void updateBooking(int bookingID, Integer customerID, String pickupLocation, String dropLocation, Double price, Double discount, Double tax,
-                          Timestamp bookingDate, String status, Integer carID, Integer driverID, Double distance) {
+                          Timestamp bookingDate, String status, Integer carID, Integer driverID, Double distance,Timestamp pickuptime) {
     StringBuilder query = new StringBuilder("UPDATE bookings SET ");
     List<Object> parameters = new ArrayList<>();
     boolean hasFieldsToUpdate = false;
@@ -156,6 +159,7 @@ public class BookingDAO {
     if (carID != null) { query.append("CarID = ?, "); parameters.add(carID); hasFieldsToUpdate = true; }
     if (driverID != null) { query.append("DriverID = ?, "); parameters.add(driverID); hasFieldsToUpdate = true; }
     if (distance != null) { query.append("Distance = ?, "); parameters.add(distance); hasFieldsToUpdate = true; }
+    if (pickuptime != null) { query.append("Pickuptime = ?"); parameters.add(pickuptime); hasFieldsToUpdate = true; }
 
     if (!hasFieldsToUpdate) {
         LOG.warning("No fields provided for update.");
@@ -223,7 +227,8 @@ public class BookingDAO {
                     Status.fromString(rs.getString("Status")),// Convert string to enum
                     rs.getInt("CarID"),
                     rs.getInt("DriverID"),
-                    rs.getDouble("Distance")
+                    rs.getDouble("Distance"),
+                    rs.getTimestamp("PickupTime")
                 );
                 bookingList.add(booking);
             }
@@ -458,10 +463,32 @@ public class BookingDAO {
                     Status.fromString(resultSet.getString("Status")),
                     resultSet.getInt("CarID"),
                     resultSet.getInt("DriverID"),
-                    resultSet.getDouble("Distance")
+                    resultSet.getDouble("Distance"),
+                    resultSet.getTimestamp("PickupTime")
                     
             );
         }
+     public boolean updateBookingStatus(int bookingID, Status status) {
+    String sql = "UPDATE bookings SET Status = ? WHERE BookingID = ?";
+
+    try (Connection conn = dbConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        // Set the new status and booking ID
+        pstmt.setString(1, status.name()); // Convert enum to String
+        pstmt.setInt(2, bookingID);
+
+        // Execute the update
+        int affectedRows = pstmt.executeUpdate();
+
+        // Return true if the update was successful
+        return affectedRows > 0;
+
+    } catch (SQLException e) {
+        LOG.log(Level.SEVERE, "Error updating booking status for BookingID: " + bookingID, e);
+        return false;
+    }
+}
 
 
 

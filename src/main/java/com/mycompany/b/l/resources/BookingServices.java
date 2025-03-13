@@ -16,6 +16,7 @@ import com.mycompany.b.l.db.GsonUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mycompany.b.l.db.Booking.Status;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -77,7 +78,8 @@ public Response addBooking(String json) {
             booking.getStatus(),
             booking.getCarId(),
             booking.getDriverId(),
-            booking.getDistance()
+            booking.getDistance(),
+            booking.getPickuptime()
         );
 
         if (bookingId != -1) {
@@ -167,7 +169,8 @@ public Response addBooking(String json) {
                 booking.getStatus().name(),
                 booking.getCarId(),
                 booking.getDriverId(),
-                booking.getDistance()
+                booking.getDistance(),
+                booking.getPickuptime()
             );
 
             return Response.ok("{\"message\": \"Booking updated successfully\"}").build();
@@ -448,6 +451,48 @@ public Response addBooking(String json) {
                     : Response.ok(gson.toJson(bookings)).build();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error fetching bookings by customer ID, car ID, and driver ID", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\": \"Internal server error\"}")
+                    .build();
+        }
+    }
+    @PUT
+    @Path("booking/{bookingId}/status")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBookingStatus(
+            @PathParam("bookingId") int bookingId,
+            String statusJson) { // JSON payload containing the new status
+        try {
+            // Parse the JSON payload to extract the new status
+            JsonObject jsonObject = gson.fromJson(statusJson, JsonObject.class);
+            String newStatusStr = jsonObject.get("status").getAsString();
+
+            // Convert the status string to the Status enum using your case-insensitive method
+            Status newStatus = Status.fromString(newStatusStr);
+
+            // Call the DAO method to update the booking status
+            boolean isUpdated = bookingDAO.updateBookingStatus(bookingId, newStatus);
+
+            // Return appropriate response based on the result
+            if (isUpdated) {
+                return Response.ok()
+                        .entity("{\"message\": \"Booking status updated successfully\"}")
+                        .build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"message\": \"Booking not found or status not updated\"}")
+                        .build();
+            }
+        } catch (IllegalArgumentException e) {
+            // Handle invalid status values
+            logger.log(Level.WARNING, "Invalid status value provided", e);
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Invalid status value\"}")
+                    .build();
+        } catch (Exception e) {
+            // Handle other exceptions
+            logger.log(Level.SEVERE, "Error updating booking status", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"error\": \"Internal server error\"}")
                     .build();

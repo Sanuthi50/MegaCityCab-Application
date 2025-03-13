@@ -121,64 +121,93 @@ public class CarServices {
                     .build();
         }
     }
-    @PUT
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCar(@PathParam("id") int carID, String json) {
-        try {
-            Car car = gson.fromJson(json, Car.class);
-            if (car.getCarID() != carID) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"error\": \"ID mismatch\"}")
+  @PUT
+@Path("{id}")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Response updateCar(@PathParam("id") int carID, String json) {
+    try {
+        // Log the incoming JSON payload
+        logger.info("Received JSON payload for car ID " + carID + ": " + json);
+
+        // Parse JSON payload into Car object
+        Car car = gson.fromJson(json, Car.class);
+
+        // Log the parsed Car object
+        logger.info("Parsed Car object: " + car.toString());
+
+        // Validate that the carID in the payload matches the URL carID
+        if (car.getCarID() != carID) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"status\": \"error\", \"message\": \"ID mismatch\"}")
+                    .build();
+        }
+
+        // Validate required fields in the Car object
+        if (car.getLicensePlate() == null || car.getModel() == null || car.getMake() == null ||
+            car.getYear() <= 0 || car.getCapacity() <= 0 || car.getFuelType() == null ||
+            car.getInsuranceExpiryDate() == null || car.getMileage() == null || car.getStatus() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"status\": \"error\", \"message\": \"Missing or invalid fields\"}")
+                    .build();
+        }
+
+        // Handle optional fields
+        Integer driverID = car.getDriverID() != null ? car.getDriverID() : null;
+
+        // Update car in the database
+        carDB.updateCar(carID, car.getLicensePlate(), car.getModel(), car.getMake(), car.getYear(), car.getCapacity(),
+                        car.getFuelType().toString(), car.isAvailability(), car.getLastServiceDate(), car.getInsuranceExpiryDate(),
+                        car.getMileage().doubleValue(), car.getStatus().getDbValue(), // Use getDbValue() instead of toString()
+                        driverID, car.getPrice(), car.getDiscount(), car.getTax());
+
+        // Return success response
+        return Response.ok("{\"status\": \"success\", \"message\": \"Car updated successfully\"}").build();
+
+    } catch (JsonSyntaxException e) {
+        logger.log(Level.SEVERE, "Invalid JSON format for car ID: " + carID, e);
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"status\": \"error\", \"message\": \"Invalid JSON format\"}")
+                .build();
+    } catch (Exception e) {
+        logger.log(Level.SEVERE, "Error updating car with ID: " + carID, e);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"status\": \"error\", \"message\": \"Internal server error\"}")
+                .build();
+    }
+}
+        @DELETE
+        @Path("{id}")
+        @Produces(MediaType.APPLICATION_JSON)
+        public Response deleteCar(@PathParam("id") int id) {
+            try {
+                carDB.deleteCar(id);
+                return Response.ok("{\"message\": \"Car deleted successfully\"}").build();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error deleting car with ID: " + id, e);
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("{\"error\": \"Internal server error\"}")
                         .build();
             }
-
-            carDB.updateCar(carID, car.getLicensePlate(), car.getModel(), car.getMake(), car.getYear(), car.getCapacity(),
-                            car.getFuelType().toString(), car.isAvailability(), car.getLastServiceDate(), car.getInsuranceExpiryDate(),
-                            car.getMileage().doubleValue(), car.getStatus().toString(), car.getDriverID(), car.getPrice(),car.getDiscount(), car.getTax());
-
-            return Response.ok("{\"message\": \"Car updated successfully\"}").build();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error updating car with ID: " + carID, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\": \"Internal server error\"}")
-                    .build();
         }
-    }
 
-    @DELETE
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteCar(@PathParam("id") int id) {
-        try {
-            carDB.deleteCar(id);
-            return Response.ok("{\"message\": \"Car deleted successfully\"}").build();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error deleting car with ID: " + id, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\": \"Internal server error\"}")
-                    .build();
+        @GET
+        @Path("search")
+        @Produces(MediaType.APPLICATION_JSON)
+        public Response searchCar(@QueryParam("licensePlate") String licensePlate) {
+            try {
+                Car car = carDB.searchCar(licensePlate);
+                return car == null ? Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"message\": \"Car not found\"}")
+                        .build()
+                        : Response.ok(gson.toJson(car)).build();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error searching car with license plate: " + licensePlate, e);
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("{\"error\": \"Internal server error\"}")
+                        .build();
+            }
         }
-    }
-
-    @GET
-    @Path("search")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response searchCar(@QueryParam("licensePlate") String licensePlate) {
-        try {
-            Car car = carDB.searchCar(licensePlate);
-            return car == null ? Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"message\": \"Car not found\"}")
-                    .build()
-                    : Response.ok(gson.toJson(car)).build();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error searching car with license plate: " + licensePlate, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\": \"Internal server error\"}")
-                    .build();
-        }
-    }
 
     @GET
     @Path("available") // Endpoint path: /cars/available

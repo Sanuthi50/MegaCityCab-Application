@@ -186,7 +186,7 @@ public void testGetAllCars() {
         assertNotNull(car); // Ensure the car object itself is not null
 
         // Ensure the car status is "Available"
-        assertEquals("AVAILABLE", car.getStatus().toString());
+        assertEquals("Available", car.getStatus().toString());
 
         // Required fields (must not be null)
         assertNotNull(car.getCarID());

@@ -2,6 +2,7 @@ package com.mycompany.b.l.db;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DriverDBTest {
+     private static final Logger logger = Logger.getLogger(DriverDBTest.class.getName());
+
     
     public DriverDBTest() {}
 
@@ -44,7 +47,7 @@ public class DriverDBTest {
         int carID = 78; // Replace with a valid car ID from your test database
         Driver result = instance.getDriverByCarId(carID);
         assertNotNull(result); // Ensure a driver is returned
-        assertEquals(carID, result.getAssignedCarID()); // Ensure the driver is assigned to the correct car
+        assertEquals(Integer.valueOf(carID), result.getAssignedCarID()); // Ensure the driver is assigned to the correct car
     }
 
     @Test
@@ -153,11 +156,45 @@ public class DriverDBTest {
         assertEquals(LocalDate.of(2025, 1, 25), updatedDriver.getLastTripDate());
         assertEquals("911", updatedDriver.getEmergencyContact());
         assertEquals(50000.00, updatedDriver.getSalary(), 0.01);
-        assertEquals(76, updatedDriver.getAssignedCarID());
+        assertEquals(Integer.valueOf(76), updatedDriver.getAssignedCarID());
         assertEquals("updated_username", updatedDriver.getUsername());
         assertEquals("updated_password", updatedDriver.getPassword());
     }
-     @Test
+       @Test
+    public void testGetDriversByAvailability() {
+        logger.info("Running testGetDriversByAvailability");
+
+        // Arrange
+        DriverDB driverDB = DriverDB.getInstance();
+
+        // Act
+        List<Driver> availableDrivers = driverDB.getDriversByAvailability(true);
+
+        // Assert
+        assertNotNull(availableDrivers); // Ensure list is not null
+
+        if (availableDrivers.isEmpty()) {
+            logger.info("No drivers found with availability=true and AssignedCarID=NULL.");
+        } else {
+            logger.info("Total drivers found: " + availableDrivers.size());
+
+            for (Driver driver : availableDrivers) {
+                // Log driver details for debugging
+                logger.info(String.format(
+                        "DriverID: %d | Availability: %b | AssignedCarID: %s",
+                        driver.getDriverID(),
+                        driver.isAvailability(),
+                        driver.getAssignedCarID() != null ? driver.getAssignedCarID().toString() : "NULL"
+                ));
+
+                // Ensure driver has expected values
+                assertTrue(driver.isAvailability());
+                assertNull(driver.getAssignedCarID());
+            }
+        }
+    }
+
+         @Test
     public void testAuthenticateDriver_Successful() {
         System.out.println("testAuthenticateDriver_Successful");
 
@@ -175,6 +212,7 @@ public class DriverDBTest {
         assertEquals(password, result.getPassword());
         // Add more assertions to validate other fields if needed
     }
+    
 
     @Test
     public void testAuthenticateDriver_Failed() {

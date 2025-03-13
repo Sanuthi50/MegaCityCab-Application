@@ -8,12 +8,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mycompany.b.l.db.Customer;
 import com.mycompany.b.l.db.CustomerDAO;
+import java.util.ArrayList;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.json.Json;
 
 @Path("drivers")
@@ -39,24 +42,70 @@ public class DriverServices {
                     .build();
         }
     }
+    
+ @GET
+@Path("available") // Endpoint: /drivers/available
+@Produces(MediaType.APPLICATION_JSON) // Response type: JSON
+public Response getAvailableDriversForDropdown() {
+    try {
+        // Fetch available drivers
+        List<Driver> availableDrivers = DriverDB.getInstance().getDriversByAvailability(true);
 
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getDriver(@PathParam("id") int id) {
-        try {
-            Driver driver = driverDB.getDriverById(id);
-            return driver == null ? Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"message\": \"Driver not found\"}")
-                    .build()
-                    : Response.ok(gson.toJson(driver)).build();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error fetching driver", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\": \"Internal server error\"}")
+        // Log the number of drivers fetched
+        logger.log(Level.INFO, "Fetched {0} available drivers", availableDrivers.size());
+
+        // Check if any drivers were found
+        if (availableDrivers.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"message\": \"No available drivers found\"}")
                     .build();
         }
+
+        // Transform the list into a dropdown-friendly format
+        List<DriverDropdownDTO> dropdownDrivers = new ArrayList<>();
+
+        for (Driver driver : availableDrivers) {
+            // Ensure the driver object and its fields are not null
+            if (Objects.nonNull(driver) 
+                && Objects.nonNull(driver.getDriverID()) 
+                && Objects.nonNull(driver.getName()) 
+                && Objects.nonNull(driver.getLicenseNumber())) {
+
+                String displayText = driver.getName() + " - " + driver.getLicenseNumber();
+                dropdownDrivers.add(new DriverDropdownDTO(driver.getDriverID(), displayText));
+            }
+        }
+
+        // Return response with formatted list
+        return Response.ok(dropdownDrivers).build();
+    } catch (Exception e) {
+        // Log error and return a 500 Internal Server Error response
+        logger.log(Level.SEVERE, "Error fetching available drivers", e);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"error\": \"Internal server error\"}")
+                .build();
     }
+}
+
+@GET
+@Path("{id}")
+@Produces(MediaType.APPLICATION_JSON)
+public Response getDriver(@PathParam("id") int id) {
+    try {
+        Driver driver = DriverDB.getInstance().getDriverById(id);
+        if (driver == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"message\": \"Driver not found\"}")
+                    .build();
+        }
+        return Response.ok(gson.toJson(driver)).build();
+    } catch (Exception e) {
+        logger.log(Level.SEVERE, "Error fetching driver", e);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"error\": \"Internal server error\"}")
+                .build();
+    }
+}
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
