@@ -29,12 +29,12 @@ public class BookingDAO {
     // Use the Singleton DatabaseConnection instance
     private final DatabaseConnection dbConnection = DatabaseConnection.getInstance();
 
-    // Add a new booking
-    public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID,double distance,Timestamp pickuptime) {
-    String sql = "INSERT INTO bookings (customerID, pickupLocation, dropLocation, price, discount, tax, bookingDate, status, carID, driverID,distance,pickuptime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+   public int addBooking(int customerID, String pickupLocation, String dropLocation, double price, double discount, double tax, Timestamp bookingDate, Status status, Integer carID, Integer driverID, double distance, Timestamp pickuptime) {
+    String sql = "INSERT INTO bookings (CustomerID, PickupLocation, DropLocation, Price, Discount, Tax, BookingDate, Status, CarID, DriverID, Distance, Pickuptime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     try (Connection conn = dbConnection.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
+        // Set parameters in the correct order
         pstmt.setInt(1, customerID);
         pstmt.setString(2, pickupLocation);
         pstmt.setString(3, dropLocation);
@@ -43,8 +43,6 @@ public class BookingDAO {
         pstmt.setDouble(6, tax);
         pstmt.setTimestamp(7, bookingDate);
         pstmt.setString(8, status.name());
-        pstmt.setDouble(11, distance);
-        pstmt.setTimestamp(12, pickuptime);// Convert enum to String
 
         // Handle null values for carID and driverID
         if (carID != null) {
@@ -59,16 +57,21 @@ public class BookingDAO {
             pstmt.setNull(10, Types.INTEGER);
         }
 
+        // Set distance and pickuptime
+        pstmt.setDouble(11, distance);
+        pstmt.setTimestamp(12, pickuptime);
+
+        // Execute the query
         int affectedRows = pstmt.executeUpdate();
         if (affectedRows > 0) {
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1); // Return the generated ID
+                    return rs.getInt(1); // Return the generated booking ID
                 }
             }
         }
     } catch (SQLException e) {
-        // Log the exception instead of printing the stack trace
+        // Log the exception
         LOG.log(Level.SEVERE, "SQL error while adding booking", e);
     }
     return -1; // Return -1 if insertion fails

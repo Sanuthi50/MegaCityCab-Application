@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mycompany.b.l.db.Booking.Status;
+import java.sql.SQLException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,8 +32,7 @@ public class BookingServices {
     private static final Gson gson = GsonUtil.getGson(); // Use global Gson instance
     private final BookingDAO bookingDAO = new BookingDAO(); // Booking database handler
 
-    // Add a new booking
-   @POST
+ @POST
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public Response addBooking(String json) {
@@ -43,30 +43,29 @@ public Response addBooking(String json) {
                     .build();
         }
 
-        logger.info("Incoming JSON: " + json);
+        logger.info("Incoming JSON: " + json.replaceAll("\"customerID\":\\d+", "\"customerID\":***"));
 
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-        if (jsonObject == null || !jsonObject.has("customerID") || !jsonObject.has("pickupLocation") ||
-            !jsonObject.has("dropLocation") || !jsonObject.has("price") || !jsonObject.has("status") ||
-            !jsonObject.has("carID")) {
+        if (jsonObject == null || !validateRequiredFields(jsonObject)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\": \"Missing required fields\"}")
                     .build();
         }
 
-        // Additional validation for field values
-        if (jsonObject.get("customerID").getAsString().isEmpty() ||
-            jsonObject.get("pickupLocation").getAsString().isEmpty() ||
-            jsonObject.get("dropLocation").getAsString().isEmpty() ||
-            jsonObject.get("price").getAsDouble() <= 0 ||
-            jsonObject.get("status").getAsString().isEmpty() ||
-            jsonObject.get("carID").getAsString().isEmpty()) {
+        if (!validateFieldValues(jsonObject)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\": \"Invalid field values\"}")
                     .build();
         }
 
+        // Ensure optional fields exist
+        if (!jsonObject.has("discount")) jsonObject.addProperty("discount", 0.0);
+        if (!jsonObject.has("tax")) jsonObject.addProperty("tax", 0.0);
+        if (!jsonObject.has("driverID")) jsonObject.addProperty("driverID", 0);
+
         Booking booking = gson.fromJson(json, Booking.class);
+        logger.info("Parsed Booking Object: " + booking);
+
         int bookingId = bookingDAO.addBooking(
             booking.getCustomerId(),
             booking.getPickupLocation(),
@@ -90,6 +89,7 @@ public Response addBooking(String json) {
                     .entity(responseJson.toString())
                     .build();
         } else {
+            logger.severe("Database insertion failed for booking: " + booking);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"error\": \"Failed to add booking\"}")
                     .build();
@@ -100,12 +100,28 @@ public Response addBooking(String json) {
                 .entity("{\"error\": \"Invalid JSON format\"}")
                 .build();
     } catch (Exception e) {
-        logger.log(Level.SEVERE, "Error adding booking", e);
+        logger.log(Level.SEVERE, "Unexpected error", e);
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity("{\"error\": \"Internal server error\"}")
                 .build();
     }
 }
+
+private boolean validateRequiredFields(JsonObject jsonObject) {
+    return jsonObject.has("customerID") && jsonObject.has("pickupLocation") &&
+           jsonObject.has("dropLocation") && jsonObject.has("price") &&
+           jsonObject.has("status") && jsonObject.has("carID");
+}
+
+private boolean validateFieldValues(JsonObject jsonObject) {
+    return jsonObject.get("customerID").getAsInt() > 0 &&
+           !jsonObject.get("pickupLocation").getAsString().isEmpty() &&
+           !jsonObject.get("dropLocation").getAsString().isEmpty() &&
+           jsonObject.get("price").getAsDouble() > 0 &&
+           !jsonObject.get("status").getAsString().isEmpty() &&
+           jsonObject.get("carID").getAsInt() > 0;
+}
+
     // Get a booking by ID
     @GET
     @Path("{id}")

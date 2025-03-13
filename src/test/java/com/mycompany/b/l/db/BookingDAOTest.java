@@ -56,8 +56,8 @@ public class BookingDAOTest {
         System.out.println("addBooking");
 
         int customerID = 1;
-        String pickupLocation = "New York";
-        String dropLocation = "Los Angeles";
+        String pickupLocation = "Galle";
+        String dropLocation = "colombo";
         double price = 100.0;
         double discount = 10.0;
         double tax = 5.0;
