@@ -31,8 +31,7 @@ public class BookingServices {
     private static final Logger logger = Logger.getLogger(BookingServices.class.getName());
     private static final Gson gson = GsonUtil.getGson(); // Use global Gson instance
     private final BookingDAO bookingDAO = new BookingDAO(); // Booking database handler
-
- @POST
+@POST
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public Response addBooking(String json) {
@@ -43,8 +42,10 @@ public Response addBooking(String json) {
                     .build();
         }
 
-        logger.info("Incoming JSON: " + json.replaceAll("\"customerID\":\\d+", "\"customerID\":***"));
+        // Log incoming JSON (mask sensitive data)
+        logger.info("Incoming JSON: " + json.replaceAll("\"customerId\":\\d+", "\"customerId\":***"));
 
+        // Parse JSON
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
         if (jsonObject == null || !validateRequiredFields(jsonObject)) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -61,11 +62,13 @@ public Response addBooking(String json) {
         // Ensure optional fields exist
         if (!jsonObject.has("discount")) jsonObject.addProperty("discount", 0.0);
         if (!jsonObject.has("tax")) jsonObject.addProperty("tax", 0.0);
-        if (!jsonObject.has("driverID")) jsonObject.addProperty("driverID", 0);
+        if (!jsonObject.has("driverId")) jsonObject.addProperty("driverId", 0);
 
+        // Convert JSON to Booking object
         Booking booking = gson.fromJson(json, Booking.class);
         logger.info("Parsed Booking Object: " + booking);
 
+        // Add booking to the database
         int bookingId = bookingDAO.addBooking(
             booking.getCustomerId(),
             booking.getPickupLocation(),
@@ -107,19 +110,32 @@ public Response addBooking(String json) {
     }
 }
 
+// Validate required fields
 private boolean validateRequiredFields(JsonObject jsonObject) {
-    return jsonObject.has("customerID") && jsonObject.has("pickupLocation") &&
-           jsonObject.has("dropLocation") && jsonObject.has("price") &&
-           jsonObject.has("status") && jsonObject.has("carID");
+    return jsonObject.has("customerId") &&
+           jsonObject.has("pickupLocation") &&
+           jsonObject.has("dropLocation") &&
+           jsonObject.has("price") &&
+           jsonObject.has("bookingDate") &&
+           jsonObject.has("status") &&
+           jsonObject.has("carId") &&
+           jsonObject.has("distance") &&
+           jsonObject.has("pickuptime");
 }
 
+// Validate field values
 private boolean validateFieldValues(JsonObject jsonObject) {
-    return jsonObject.get("customerID").getAsInt() > 0 &&
-           !jsonObject.get("pickupLocation").getAsString().isEmpty() &&
-           !jsonObject.get("dropLocation").getAsString().isEmpty() &&
-           jsonObject.get("price").getAsDouble() > 0 &&
-           !jsonObject.get("status").getAsString().isEmpty() &&
-           jsonObject.get("carID").getAsInt() > 0;
+    try {
+        // Ensure numeric fields are valid
+        jsonObject.get("customerId").getAsInt();
+        jsonObject.get("price").getAsDouble();
+        jsonObject.get("distance").getAsDouble();
+        jsonObject.get("carId").getAsInt();
+        jsonObject.get("driverId").getAsInt();
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
 }
 
     // Get a booking by ID

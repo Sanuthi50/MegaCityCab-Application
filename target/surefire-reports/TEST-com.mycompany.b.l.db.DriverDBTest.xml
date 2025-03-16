@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.DriverDBTest" time="0.492" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.b.l.db.DriverDBTest" time="0.012" tests="7" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -19,7 +19,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire2359194321753439841\surefirebooter-20250314003437732_3.jar C:\Users\User\AppData\Local\Temp\surefire2359194321753439841 2025-03-14T00-34-37_451-jvmRun1 surefire-20250314003437732_1tmp surefire_0-20250314003437732_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire8780117235130596701\surefirebooter-20250316143610791_3.jar C:\Users\User\AppData\Local\Temp\surefire8780117235130596701 2025-03-16T14-36-10_533-jvmRun1 surefire-20250316143610791_1tmp surefire_0-20250316143610791_2tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\User\Downloads\B.L\target\test-classes;C:\Users\User\Downloads\B.L\target\classes;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\User\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\User\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar;C:\Users\User\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\User\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\User\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\User\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\User\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\jaxrs\jackson-jaxrs-json-provider\2.13.0\jackson-jaxrs-json-provider-2.13.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\jaxrs\jackson-jaxrs-base\2.13.0\jackson-jaxrs-base-2.13.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.0\jackson-core-2.13.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.0\jackson-databind-2.13.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\module\jackson-module-jaxb-annotations\2.13.0\jackson-module-jaxb-annotations-2.13.0.jar;C:\Users\User\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.0\jackson-annotations-2.13.0.jar;C:\Users\User\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\2.3.3\jakarta.xml.bind-api-2.3.3.jar;C:\Users\User\.m2\repository\jakarta\activation\jakarta.activation-api\1.2.1\jakarta.activation-api-1.2.1.jar;C:\Users\User\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\User"/>
@@ -33,7 +33,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire2359194321753439841\surefirebooter-20250314003437732_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire8780117235130596701\surefirebooter-20250316143610791_3.jar"/>
     <property name="sun.boot.class.path" value="C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\resources.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\rt.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\sunrsasign.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jsse.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jce.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\charsets.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\jfr.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\lib\cat.jar;C:\Users\User\OneDrive\Documents\NetBeansJDKs\zulu8.84.0.15-ca-jdk8.0.442-win_x64_2\zulu8.84.0.15-ca-jdk8.0.442-win_x64\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -65,22 +65,22 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testGetDriverById" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
+  <testcase name="testGetDriverById" classname="com.mycompany.b.l.db.DriverDBTest" time="0.005">
     <system-out><![CDATA[getDriverById
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateDriver" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
+  <testcase name="testUpdateDriver" classname="com.mycompany.b.l.db.DriverDBTest" time="0.001">
     <system-out><![CDATA[updateDriver
 ]]></system-out>
-    <system-err><![CDATA[Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDB updateDriver
+    <system-err><![CDATA[Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDB updateDriver
 INFO: Driver updated successfully: 4
 ]]></system-err>
   </testcase>
-  <testcase name="testGetDriverByCarId" classname="com.mycompany.b.l.db.DriverDBTest" time="0.004">
+  <testcase name="testGetDriverByCarId" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
     <system-out><![CDATA[getDriverByCarId
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllDrivers" classname="com.mycompany.b.l.db.DriverDBTest" time="0.483">
+  <testcase name="testGetAllDrivers" classname="com.mycompany.b.l.db.DriverDBTest" time="0.002">
     <system-out><![CDATA[getAllDrivers
 Driver [driverID=1, name=Jane Doe, nic=987654321V, licenseNumber=LIC67890, licenseExpiryDate=2026-12-31, phoneNumber=0987654321, address=456 Elm St, email=jane.doe@example.com, dateOfBirth=1995-05-05, gender=Female, assignedCarID=78, availability=false, yearsOfExperience=3, rating=4.0, lastTripDate=2023-09-01, emergencyContact=1234567890, salary=45000.0, username=janedoe, password=Hash12]
 Driver [driverID=2, name=Taylor Swift, nic=19008899V, licenseNumber=C90990, licenseExpiryDate=2028-12-20, phoneNumber=076560075, address=1288, Main2 St, USA, email=TaylorSwift@gmail.com, dateOfBirth=1985-08-15, gender=Female, assignedCarID=78, availability=true, yearsOfExperience=5, rating=4.5, lastTripDate=2025-02-01, emergencyContact=07129879, salary=32000.0, username=taylor_swift, password=$2a$12$e8iBk6mDDeKv7Pwdp8i59.pXFAsD.7h4oUpq19RoD9/m9o800I1gO]
@@ -99,26 +99,26 @@ Driver [driverID=15, name=Charlie Davis, nic=654123987V, licenseNumber=I5678901,
 Driver [driverID=60, name=Zoe Young, nic=456123789V, licenseNumber=B6789012, licenseExpiryDate=2025-02-28, phoneNumber=0786789012, address=987 Spruce St, Trincomalee, email=zoe.young@example.com, dateOfBirth=1994-01-10, gender=Female, assignedCarID=94, availability=true, yearsOfExperience=3, rating=4.0, lastTripDate=2023-09-25, emergencyContact=0777654321, salary=43000.0, username=zoeyoung, password=hashedpassword60]
 Driver [driverID=61, name=Mark, nic=99876v, licenseNumber=mwjhu7777, licenseExpiryDate=2025-02-06, phoneNumber=071987652, address=325/12/77,kurulu Uyana,palanwatte, pannipitiya, email=Marka@gmail.com, dateOfBirth=2000-04-08, gender=Male, assignedCarID=78, availability=true, yearsOfExperience=2, rating=2.3, lastTripDate=2025-01-01, emergencyContact=1122, salary=20000.0, username=Mark, password=Mark123]
 ]]></system-out>
-    <system-err><![CDATA[Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDB getAllDrivers
+    <system-err><![CDATA[Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDB getAllDrivers
 INFO: Fetched 16 drivers from DB
 ]]></system-err>
   </testcase>
   <testcase name="testGetDriversByAvailability" classname="com.mycompany.b.l.db.DriverDBTest" time="0.001">
-    <system-err><![CDATA[Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
+    <system-err><![CDATA[Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
 INFO: Running testGetDriversByAvailability
-Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDB getDriversByAvailability
+Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDB getDriversByAvailability
 INFO: Fetched 1 drivers with availability: true and no assigned car.
-Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
+Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
 INFO: Total drivers found: 1
-Mar 14, 2025 12:34:39 AM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
+Mar 16, 2025 2:36:11 PM com.mycompany.b.l.db.DriverDBTest testGetDriversByAvailability
 INFO: DriverID: 5 | Availability: true | AssignedCarID: NULL
 ]]></system-err>
   </testcase>
-  <testcase name="testAuthenticateDriver_Successful" classname="com.mycompany.b.l.db.DriverDBTest" time="0.002">
+  <testcase name="testAuthenticateDriver_Successful" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
     <system-out><![CDATA[testAuthenticateDriver_Successful
 ]]></system-out>
   </testcase>
-  <testcase name="testAuthenticateDriver_Failed" classname="com.mycompany.b.l.db.DriverDBTest" time="0.001">
+  <testcase name="testAuthenticateDriver_Failed" classname="com.mycompany.b.l.db.DriverDBTest" time="0.0">
     <system-out><![CDATA[testAuthenticateDriver_Failed
 ]]></system-out>
   </testcase>
